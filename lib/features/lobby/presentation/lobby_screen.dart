@@ -16,7 +16,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
 
 class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  List<Player> _currentPlayers = [];
+  final List<Player> _currentPlayers = [];
 
   @override
   void initState() {

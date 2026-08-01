@@ -71,9 +71,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Connection Indicator
-                  LoopingFade(
-                    duration: const Duration(seconds: 1),
-                    child: const Icon(
+                  const LoopingFade(
+                    duration: Duration(seconds: 1),
+                    child: Icon(
                       Icons.wifi,
                       color: Colors.green,
                     ),

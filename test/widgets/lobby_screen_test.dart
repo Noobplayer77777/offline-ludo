@@ -16,7 +16,7 @@ import 'package:go_router/go_router.dart';
 class MockLobbyService extends Mock implements LobbyService {}
 
 class TestLobbyNotifier extends LobbyNotifier {
-  Lobby? _state;
+  final Lobby? _state;
   TestLobbyNotifier(this._state);
 
   @override
@@ -29,7 +29,7 @@ class TestLobbyNotifier extends LobbyNotifier {
 }
 
 class TestCurrentPlayerIdNotifier extends CurrentPlayerIdNotifier {
-  String? _state;
+  final String? _state;
   TestCurrentPlayerIdNotifier(this._state);
 
   @override
@@ -95,11 +95,11 @@ void main() {
   });
 
   testWidgets('LobbyScreen renders correctly for host', (WidgetTester tester) async {
-    final player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
-    final player2 = Player(id: 'player2', name: 'Bob', color: PlayerColor.blue, isReady: false);
+    const player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
+    const player2 = Player(id: 'player2', name: 'Bob', color: PlayerColor.blue, isReady: false);
     
-    final lobby = Lobby(
-      room: const Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
+    const lobby = Lobby(
+      room: Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
       players: [player1, player2],
     );
 
@@ -121,11 +121,11 @@ void main() {
   });
 
   testWidgets('LobbyScreen renders correctly for client', (WidgetTester tester) async {
-    final player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
-    final player2 = Player(id: 'player2', name: 'Bob', color: PlayerColor.blue, isReady: false);
+    const player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
+    const player2 = Player(id: 'player2', name: 'Bob', color: PlayerColor.blue, isReady: false);
     
-    final lobby = Lobby(
-      room: const Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
+    const lobby = Lobby(
+      room: Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
       players: [player1, player2],
     );
 
@@ -151,11 +151,11 @@ void main() {
   });
 
   testWidgets('LobbyScreen start game button enables when all ready', (WidgetTester tester) async {
-    final player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
-    final player2 = Player(id: 'player2', name: 'Bob', color: PlayerColor.blue, isReady: true);
+    const player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
+    const player2 = Player(id: 'player2', name: 'Bob', color: PlayerColor.blue, isReady: true);
     
-    final lobby = Lobby(
-      room: const Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
+    const lobby = Lobby(
+      room: Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
       players: [player1, player2],
     );
 
@@ -185,9 +185,9 @@ void main() {
       },
     );
 
-    final player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
-    final lobby = Lobby(
-      room: const Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
+    const player1 = Player(id: 'player1', name: 'Alice', color: PlayerColor.red, isReady: true);
+    const lobby = Lobby(
+      room: Room(id: 'r1', name: 'My Room', code: 'ABCD', hostIp: '127.0.0.1', port: 12345),
       players: [player1],
     );
 

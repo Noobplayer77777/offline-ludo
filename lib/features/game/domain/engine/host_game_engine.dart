@@ -23,7 +23,7 @@ class HostGameEngine {
   StreamSubscription<Packet>? _packetSub;
 
   GameState? _gameState;
-  Map<String, Player> _lobbyPlayers = {}; // Track lobby players until game starts
+  final Map<String, Player> _lobbyPlayers = {}; // Track lobby players until game starts
 
   HostGameEngine(this._server) {
     _packetSub = _server?.incomingPackets.listen(_handlePacket);

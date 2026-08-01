@@ -10,8 +10,8 @@ void main() {
     SharedPreferences.setMockInitialValues({});
 
     await tester.pumpWidget(
-      ProviderScope(
-        child: const MaterialApp(
+      const ProviderScope(
+        child: MaterialApp(
           home: Scaffold(
             body: SettingsDialog(),
           ),
