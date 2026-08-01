@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import '../../features/lobby/presentation/main_menu_screen.dart';
 import '../../features/lobby/presentation/lobby_screen.dart';
+import '../../features/game/presentation/game_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -12,6 +13,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/lobby',
       builder: (context, state) => const LobbyScreen(),
+    ),
+    GoRoute(
+      path: '/game',
+      builder: (context, state) => const GameScreen(),
     ),
   ],
 );

@@ -4,9 +4,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
 import 'package:offline_ludo/features/game/domain/models/player.dart';
-
-class LobbyScreen extends ConsumerWidget {
+import 'package:offline_ludo/features/game/presentation/providers/game_provider.dart';
+class LobbyScreen extends ConsumerStatefulWidget {
   const LobbyScreen({super.key});
+
+  @override
+  ConsumerState<LobbyScreen> createState() => _LobbyScreenState();
+}
+
+class _LobbyScreenState extends ConsumerState<LobbyScreen> {
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  List<Player> _currentPlayers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Delay slightly to let the widget mount, then sync initial state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final lobby = ref.read(lobbyStateProvider);
+      if (lobby != null) {
+        _syncList(lobby.players);
+      }
+    });
+  }
 
   Color _getColorForPlayer(PlayerColor color) {
     switch (color) {
@@ -21,8 +41,95 @@ class LobbyScreen extends ConsumerWidget {
     }
   }
 
+  void _syncList(List<Player> newPlayers) {
+    // Basic diffing
+    for (int i = 0; i < newPlayers.length; i++) {
+      if (i >= _currentPlayers.length) {
+        _currentPlayers.insert(i, newPlayers[i]);
+        _listKey.currentState?.insertItem(i);
+      } else if (_currentPlayers[i].id != newPlayers[i].id) {
+        // Assume removed
+        final removedPlayer = _currentPlayers.removeAt(i);
+        _listKey.currentState?.removeItem(
+          i,
+          (context, animation) => _buildItem(removedPlayer, animation, context),
+        );
+        i--;
+      } else {
+        // Update state of existing player
+        _currentPlayers[i] = newPlayers[i];
+      }
+    }
+    while (_currentPlayers.length > newPlayers.length) {
+      final idx = _currentPlayers.length - 1;
+      final removedPlayer = _currentPlayers.removeAt(idx);
+      _listKey.currentState?.removeItem(
+        idx,
+        (context, animation) => _buildItem(removedPlayer, animation, context),
+      );
+    }
+  }
+
+  Widget _buildItem(Player player, Animation<double> animation, BuildContext context) {
+    final myId = ref.read(currentPlayerIdProvider);
+    final isMe = player.id == myId;
+    final isPlayerHost = _currentPlayers.isNotEmpty && _currentPlayers.first.id == player.id;
+    
+    return SizeTransition(
+      sizeFactor: animation,
+      child: FadeTransition(
+        opacity: animation,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: _getColorForPlayer(player.color),
+            child: Icon(
+              isPlayerHost ? Icons.star : Icons.person,
+              color: Colors.white,
+            ),
+          ),
+          title: Text(
+            player.name + (isMe ? ' (You)' : ''),
+            style: TextStyle(
+              fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          trailing: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: player.isReady ? Colors.green : Colors.orange,
+              ),
+            ),
+            child: Text(
+              player.isReady ? 'READY' : 'WAITING',
+              style: TextStyle(
+                color: player.isReady ? Colors.green : Colors.orange,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    ref.listen(gameStateProvider, (previous, next) {
+      if (next != null) {
+        context.go('/game');
+      }
+    });
+
+    ref.listen(lobbyStateProvider, (previous, next) {
+      if (next != null) {
+        _syncList(next.players);
+      }
+    });
+
     final lobby = ref.watch(lobbyStateProvider);
     final myId = ref.watch(currentPlayerIdProvider);
 
@@ -104,47 +211,11 @@ class LobbyScreen extends ConsumerWidget {
               child: Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: ListView.separated(
-                  itemCount: lobby.players.length,
-                  separatorBuilder: (context, index) => const Divider(height: 1),
-                  itemBuilder: (context, index) {
-                    final player = lobby.players[index];
-                    final isMe = player.id == myId;
-                    final isPlayerHost = index == 0;
-                    
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: _getColorForPlayer(player.color),
-                        child: Icon(
-                          isPlayerHost ? Icons.star : Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      title: Text(
-                        player.name + (isMe ? ' (You)' : ''),
-                        style: TextStyle(
-                          fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      trailing: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: player.isReady ? Colors.green : Colors.orange,
-                          ),
-                        ),
-                        child: Text(
-                          player.isReady ? 'READY' : 'WAITING',
-                          style: TextStyle(
-                            color: player.isReady ? Colors.green : Colors.orange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    );
+                child: AnimatedList(
+                  key: _listKey,
+                  initialItemCount: _currentPlayers.length,
+                  itemBuilder: (context, index, animation) {
+                    return _buildItem(_currentPlayers[index], animation, context);
                   },
                 ),
               ),

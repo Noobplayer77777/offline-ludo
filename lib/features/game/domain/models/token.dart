@@ -1,4 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:offline_ludo/features/game/domain/board/path_generator.dart';
+import 'package:offline_ludo/features/game/domain/models/player.dart';
+import 'package:offline_ludo/features/game/domain/models/board_path.dart';
 
 part 'token.freezed.dart';
 part 'token.g.dart';

@@ -19,16 +19,60 @@ PacketPayload _$PacketPayloadFromJson(
           return _JoinRoomPayload.fromJson(
             json
           );
+                case 'playerJoined':
+          return _PlayerJoinedPayload.fromJson(
+            json
+          );
+                case 'playerLeft':
+          return _PlayerLeftPayload.fromJson(
+            json
+          );
+                case 'reconnect':
+          return _ReconnectPayload.fromJson(
+            json
+          );
                 case 'ready':
           return _ReadyPayload.fromJson(
+            json
+          );
+                case 'startGame':
+          return _StartGamePayload.fromJson(
+            json
+          );
+                case 'gameStateSnapshot':
+          return _GameStateSnapshotPayload.fromJson(
+            json
+          );
+                case 'nextTurn':
+          return _NextTurnPayload.fromJson(
+            json
+          );
+                case 'winner':
+          return _WinnerPayload.fromJson(
             json
           );
                 case 'rollDice':
           return _RollDicePayload.fromJson(
             json
           );
+                case 'diceResult':
+          return _DiceResultPayload.fromJson(
+            json
+          );
                 case 'moveToken':
           return _MoveTokenPayload.fromJson(
+            json
+          );
+                case 'moveTokenEvent':
+          return _MoveTokenEventPayload.fromJson(
+            json
+          );
+                case 'capture':
+          return _CapturePayload.fromJson(
+            json
+          );
+                case 'ack':
+          return _AckPayload.fromJson(
             json
           );
                 case 'ping':
@@ -101,14 +145,25 @@ extension PacketPayloadPatterns on PacketPayload {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _JoinRoomPayload value)?  joinRoom,TResult Function( _ReadyPayload value)?  ready,TResult Function( _RollDicePayload value)?  rollDice,TResult Function( _MoveTokenPayload value)?  moveToken,TResult Function( _PingPayload value)?  ping,TResult Function( _PongPayload value)?  pong,TResult Function( _ErrorPayload value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _JoinRoomPayload value)?  joinRoom,TResult Function( _PlayerJoinedPayload value)?  playerJoined,TResult Function( _PlayerLeftPayload value)?  playerLeft,TResult Function( _ReconnectPayload value)?  reconnect,TResult Function( _ReadyPayload value)?  ready,TResult Function( _StartGamePayload value)?  startGame,TResult Function( _GameStateSnapshotPayload value)?  gameStateSnapshot,TResult Function( _NextTurnPayload value)?  nextTurn,TResult Function( _WinnerPayload value)?  winner,TResult Function( _RollDicePayload value)?  rollDice,TResult Function( _DiceResultPayload value)?  diceResult,TResult Function( _MoveTokenPayload value)?  moveToken,TResult Function( _MoveTokenEventPayload value)?  moveTokenEvent,TResult Function( _CapturePayload value)?  capture,TResult Function( _AckPayload value)?  ack,TResult Function( _PingPayload value)?  ping,TResult Function( _PongPayload value)?  pong,TResult Function( _ErrorPayload value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
-return joinRoom(_that);case _ReadyPayload() when ready != null:
-return ready(_that);case _RollDicePayload() when rollDice != null:
-return rollDice(_that);case _MoveTokenPayload() when moveToken != null:
-return moveToken(_that);case _PingPayload() when ping != null:
+return joinRoom(_that);case _PlayerJoinedPayload() when playerJoined != null:
+return playerJoined(_that);case _PlayerLeftPayload() when playerLeft != null:
+return playerLeft(_that);case _ReconnectPayload() when reconnect != null:
+return reconnect(_that);case _ReadyPayload() when ready != null:
+return ready(_that);case _StartGamePayload() when startGame != null:
+return startGame(_that);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
+return gameStateSnapshot(_that);case _NextTurnPayload() when nextTurn != null:
+return nextTurn(_that);case _WinnerPayload() when winner != null:
+return winner(_that);case _RollDicePayload() when rollDice != null:
+return rollDice(_that);case _DiceResultPayload() when diceResult != null:
+return diceResult(_that);case _MoveTokenPayload() when moveToken != null:
+return moveToken(_that);case _MoveTokenEventPayload() when moveTokenEvent != null:
+return moveTokenEvent(_that);case _CapturePayload() when capture != null:
+return capture(_that);case _AckPayload() when ack != null:
+return ack(_that);case _PingPayload() when ping != null:
 return ping(_that);case _PongPayload() when pong != null:
 return pong(_that);case _ErrorPayload() when error != null:
 return error(_that);case _:
@@ -129,14 +184,25 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _JoinRoomPayload value)  joinRoom,required TResult Function( _ReadyPayload value)  ready,required TResult Function( _RollDicePayload value)  rollDice,required TResult Function( _MoveTokenPayload value)  moveToken,required TResult Function( _PingPayload value)  ping,required TResult Function( _PongPayload value)  pong,required TResult Function( _ErrorPayload value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _JoinRoomPayload value)  joinRoom,required TResult Function( _PlayerJoinedPayload value)  playerJoined,required TResult Function( _PlayerLeftPayload value)  playerLeft,required TResult Function( _ReconnectPayload value)  reconnect,required TResult Function( _ReadyPayload value)  ready,required TResult Function( _StartGamePayload value)  startGame,required TResult Function( _GameStateSnapshotPayload value)  gameStateSnapshot,required TResult Function( _NextTurnPayload value)  nextTurn,required TResult Function( _WinnerPayload value)  winner,required TResult Function( _RollDicePayload value)  rollDice,required TResult Function( _DiceResultPayload value)  diceResult,required TResult Function( _MoveTokenPayload value)  moveToken,required TResult Function( _MoveTokenEventPayload value)  moveTokenEvent,required TResult Function( _CapturePayload value)  capture,required TResult Function( _AckPayload value)  ack,required TResult Function( _PingPayload value)  ping,required TResult Function( _PongPayload value)  pong,required TResult Function( _ErrorPayload value)  error,}){
 final _that = this;
 switch (_that) {
 case _JoinRoomPayload():
-return joinRoom(_that);case _ReadyPayload():
-return ready(_that);case _RollDicePayload():
-return rollDice(_that);case _MoveTokenPayload():
-return moveToken(_that);case _PingPayload():
+return joinRoom(_that);case _PlayerJoinedPayload():
+return playerJoined(_that);case _PlayerLeftPayload():
+return playerLeft(_that);case _ReconnectPayload():
+return reconnect(_that);case _ReadyPayload():
+return ready(_that);case _StartGamePayload():
+return startGame(_that);case _GameStateSnapshotPayload():
+return gameStateSnapshot(_that);case _NextTurnPayload():
+return nextTurn(_that);case _WinnerPayload():
+return winner(_that);case _RollDicePayload():
+return rollDice(_that);case _DiceResultPayload():
+return diceResult(_that);case _MoveTokenPayload():
+return moveToken(_that);case _MoveTokenEventPayload():
+return moveTokenEvent(_that);case _CapturePayload():
+return capture(_that);case _AckPayload():
+return ack(_that);case _PingPayload():
 return ping(_that);case _PongPayload():
 return pong(_that);case _ErrorPayload():
 return error(_that);}
@@ -153,14 +219,25 @@ return error(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _JoinRoomPayload value)?  joinRoom,TResult? Function( _ReadyPayload value)?  ready,TResult? Function( _RollDicePayload value)?  rollDice,TResult? Function( _MoveTokenPayload value)?  moveToken,TResult? Function( _PingPayload value)?  ping,TResult? Function( _PongPayload value)?  pong,TResult? Function( _ErrorPayload value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _JoinRoomPayload value)?  joinRoom,TResult? Function( _PlayerJoinedPayload value)?  playerJoined,TResult? Function( _PlayerLeftPayload value)?  playerLeft,TResult? Function( _ReconnectPayload value)?  reconnect,TResult? Function( _ReadyPayload value)?  ready,TResult? Function( _StartGamePayload value)?  startGame,TResult? Function( _GameStateSnapshotPayload value)?  gameStateSnapshot,TResult? Function( _NextTurnPayload value)?  nextTurn,TResult? Function( _WinnerPayload value)?  winner,TResult? Function( _RollDicePayload value)?  rollDice,TResult? Function( _DiceResultPayload value)?  diceResult,TResult? Function( _MoveTokenPayload value)?  moveToken,TResult? Function( _MoveTokenEventPayload value)?  moveTokenEvent,TResult? Function( _CapturePayload value)?  capture,TResult? Function( _AckPayload value)?  ack,TResult? Function( _PingPayload value)?  ping,TResult? Function( _PongPayload value)?  pong,TResult? Function( _ErrorPayload value)?  error,}){
 final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
-return joinRoom(_that);case _ReadyPayload() when ready != null:
-return ready(_that);case _RollDicePayload() when rollDice != null:
-return rollDice(_that);case _MoveTokenPayload() when moveToken != null:
-return moveToken(_that);case _PingPayload() when ping != null:
+return joinRoom(_that);case _PlayerJoinedPayload() when playerJoined != null:
+return playerJoined(_that);case _PlayerLeftPayload() when playerLeft != null:
+return playerLeft(_that);case _ReconnectPayload() when reconnect != null:
+return reconnect(_that);case _ReadyPayload() when ready != null:
+return ready(_that);case _StartGamePayload() when startGame != null:
+return startGame(_that);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
+return gameStateSnapshot(_that);case _NextTurnPayload() when nextTurn != null:
+return nextTurn(_that);case _WinnerPayload() when winner != null:
+return winner(_that);case _RollDicePayload() when rollDice != null:
+return rollDice(_that);case _DiceResultPayload() when diceResult != null:
+return diceResult(_that);case _MoveTokenPayload() when moveToken != null:
+return moveToken(_that);case _MoveTokenEventPayload() when moveTokenEvent != null:
+return moveTokenEvent(_that);case _CapturePayload() when capture != null:
+return capture(_that);case _AckPayload() when ack != null:
+return ack(_that);case _PingPayload() when ping != null:
 return ping(_that);case _PongPayload() when pong != null:
 return pong(_that);case _ErrorPayload() when error != null:
 return error(_that);case _:
@@ -180,13 +257,24 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String username,  String version)?  joinRoom,TResult Function( bool isReady)?  ready,TResult Function()?  rollDice,TResult Function( String tokenId)?  moveToken,TResult Function()?  ping,TResult Function()?  pong,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String username,  String version)?  joinRoom,TResult Function( String clientId,  String username,  String color)?  playerJoined,TResult Function( String clientId,  String reason)?  playerLeft,TResult Function( String sessionToken)?  reconnect,TResult Function( bool isReady)?  ready,TResult Function( String firstTurnClientId)?  startGame,TResult Function( Map<String, dynamic> state)?  gameStateSnapshot,TResult Function( String activeClientId,  int timeoutMs)?  nextTurn,TResult Function( String clientId,  int rank)?  winner,TResult Function()?  rollDice,TResult Function( int value,  String rollerId)?  diceResult,TResult Function( String tokenId)?  moveToken,TResult Function( String tokenId,  List<int> path)?  moveTokenEvent,TResult Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)?  capture,TResult Function( String ackType,  int eventId)?  ack,TResult Function()?  ping,TResult Function()?  pong,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
-return joinRoom(_that.username,_that.version);case _ReadyPayload() when ready != null:
-return ready(_that.isReady);case _RollDicePayload() when rollDice != null:
-return rollDice();case _MoveTokenPayload() when moveToken != null:
-return moveToken(_that.tokenId);case _PingPayload() when ping != null:
+return joinRoom(_that.username,_that.version);case _PlayerJoinedPayload() when playerJoined != null:
+return playerJoined(_that.clientId,_that.username,_that.color);case _PlayerLeftPayload() when playerLeft != null:
+return playerLeft(_that.clientId,_that.reason);case _ReconnectPayload() when reconnect != null:
+return reconnect(_that.sessionToken);case _ReadyPayload() when ready != null:
+return ready(_that.isReady);case _StartGamePayload() when startGame != null:
+return startGame(_that.firstTurnClientId);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
+return gameStateSnapshot(_that.state);case _NextTurnPayload() when nextTurn != null:
+return nextTurn(_that.activeClientId,_that.timeoutMs);case _WinnerPayload() when winner != null:
+return winner(_that.clientId,_that.rank);case _RollDicePayload() when rollDice != null:
+return rollDice();case _DiceResultPayload() when diceResult != null:
+return diceResult(_that.value,_that.rollerId);case _MoveTokenPayload() when moveToken != null:
+return moveToken(_that.tokenId);case _MoveTokenEventPayload() when moveTokenEvent != null:
+return moveTokenEvent(_that.tokenId,_that.path);case _CapturePayload() when capture != null:
+return capture(_that.capturingTokenId,_that.capturedTokenId,_that.returnPath);case _AckPayload() when ack != null:
+return ack(_that.ackType,_that.eventId);case _PingPayload() when ping != null:
 return ping();case _PongPayload() when pong != null:
 return pong();case _ErrorPayload() when error != null:
 return error(_that.message);case _:
@@ -207,13 +295,24 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String username,  String version)  joinRoom,required TResult Function( bool isReady)  ready,required TResult Function()  rollDice,required TResult Function( String tokenId)  moveToken,required TResult Function()  ping,required TResult Function()  pong,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String username,  String version)  joinRoom,required TResult Function( String clientId,  String username,  String color)  playerJoined,required TResult Function( String clientId,  String reason)  playerLeft,required TResult Function( String sessionToken)  reconnect,required TResult Function( bool isReady)  ready,required TResult Function( String firstTurnClientId)  startGame,required TResult Function( Map<String, dynamic> state)  gameStateSnapshot,required TResult Function( String activeClientId,  int timeoutMs)  nextTurn,required TResult Function( String clientId,  int rank)  winner,required TResult Function()  rollDice,required TResult Function( int value,  String rollerId)  diceResult,required TResult Function( String tokenId)  moveToken,required TResult Function( String tokenId,  List<int> path)  moveTokenEvent,required TResult Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)  capture,required TResult Function( String ackType,  int eventId)  ack,required TResult Function()  ping,required TResult Function()  pong,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _JoinRoomPayload():
-return joinRoom(_that.username,_that.version);case _ReadyPayload():
-return ready(_that.isReady);case _RollDicePayload():
-return rollDice();case _MoveTokenPayload():
-return moveToken(_that.tokenId);case _PingPayload():
+return joinRoom(_that.username,_that.version);case _PlayerJoinedPayload():
+return playerJoined(_that.clientId,_that.username,_that.color);case _PlayerLeftPayload():
+return playerLeft(_that.clientId,_that.reason);case _ReconnectPayload():
+return reconnect(_that.sessionToken);case _ReadyPayload():
+return ready(_that.isReady);case _StartGamePayload():
+return startGame(_that.firstTurnClientId);case _GameStateSnapshotPayload():
+return gameStateSnapshot(_that.state);case _NextTurnPayload():
+return nextTurn(_that.activeClientId,_that.timeoutMs);case _WinnerPayload():
+return winner(_that.clientId,_that.rank);case _RollDicePayload():
+return rollDice();case _DiceResultPayload():
+return diceResult(_that.value,_that.rollerId);case _MoveTokenPayload():
+return moveToken(_that.tokenId);case _MoveTokenEventPayload():
+return moveTokenEvent(_that.tokenId,_that.path);case _CapturePayload():
+return capture(_that.capturingTokenId,_that.capturedTokenId,_that.returnPath);case _AckPayload():
+return ack(_that.ackType,_that.eventId);case _PingPayload():
 return ping();case _PongPayload():
 return pong();case _ErrorPayload():
 return error(_that.message);}
@@ -230,13 +329,24 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String username,  String version)?  joinRoom,TResult? Function( bool isReady)?  ready,TResult? Function()?  rollDice,TResult? Function( String tokenId)?  moveToken,TResult? Function()?  ping,TResult? Function()?  pong,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String username,  String version)?  joinRoom,TResult? Function( String clientId,  String username,  String color)?  playerJoined,TResult? Function( String clientId,  String reason)?  playerLeft,TResult? Function( String sessionToken)?  reconnect,TResult? Function( bool isReady)?  ready,TResult? Function( String firstTurnClientId)?  startGame,TResult? Function( Map<String, dynamic> state)?  gameStateSnapshot,TResult? Function( String activeClientId,  int timeoutMs)?  nextTurn,TResult? Function( String clientId,  int rank)?  winner,TResult? Function()?  rollDice,TResult? Function( int value,  String rollerId)?  diceResult,TResult? Function( String tokenId)?  moveToken,TResult? Function( String tokenId,  List<int> path)?  moveTokenEvent,TResult? Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)?  capture,TResult? Function( String ackType,  int eventId)?  ack,TResult? Function()?  ping,TResult? Function()?  pong,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
-return joinRoom(_that.username,_that.version);case _ReadyPayload() when ready != null:
-return ready(_that.isReady);case _RollDicePayload() when rollDice != null:
-return rollDice();case _MoveTokenPayload() when moveToken != null:
-return moveToken(_that.tokenId);case _PingPayload() when ping != null:
+return joinRoom(_that.username,_that.version);case _PlayerJoinedPayload() when playerJoined != null:
+return playerJoined(_that.clientId,_that.username,_that.color);case _PlayerLeftPayload() when playerLeft != null:
+return playerLeft(_that.clientId,_that.reason);case _ReconnectPayload() when reconnect != null:
+return reconnect(_that.sessionToken);case _ReadyPayload() when ready != null:
+return ready(_that.isReady);case _StartGamePayload() when startGame != null:
+return startGame(_that.firstTurnClientId);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
+return gameStateSnapshot(_that.state);case _NextTurnPayload() when nextTurn != null:
+return nextTurn(_that.activeClientId,_that.timeoutMs);case _WinnerPayload() when winner != null:
+return winner(_that.clientId,_that.rank);case _RollDicePayload() when rollDice != null:
+return rollDice();case _DiceResultPayload() when diceResult != null:
+return diceResult(_that.value,_that.rollerId);case _MoveTokenPayload() when moveToken != null:
+return moveToken(_that.tokenId);case _MoveTokenEventPayload() when moveTokenEvent != null:
+return moveTokenEvent(_that.tokenId,_that.path);case _CapturePayload() when capture != null:
+return capture(_that.capturingTokenId,_that.capturedTokenId,_that.returnPath);case _AckPayload() when ack != null:
+return ack(_that.ackType,_that.eventId);case _PingPayload() when ping != null:
 return ping();case _PongPayload() when pong != null:
 return pong();case _ErrorPayload() when error != null:
 return error(_that.message);case _:
@@ -325,6 +435,231 @@ as String,
 /// @nodoc
 @JsonSerializable()
 
+class _PlayerJoinedPayload implements PacketPayload {
+  const _PlayerJoinedPayload({required this.clientId, required this.username, required this.color, final  String? $type}): $type = $type ?? 'playerJoined';
+  factory _PlayerJoinedPayload.fromJson(Map<String, dynamic> json) => _$PlayerJoinedPayloadFromJson(json);
+
+ final  String clientId;
+ final  String username;
+ final  String color;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PlayerJoinedPayloadCopyWith<_PlayerJoinedPayload> get copyWith => __$PlayerJoinedPayloadCopyWithImpl<_PlayerJoinedPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PlayerJoinedPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlayerJoinedPayload&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.username, username) || other.username == username)&&(identical(other.color, color) || other.color == color));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,clientId,username,color);
+
+@override
+String toString() {
+  return 'PacketPayload.playerJoined(clientId: $clientId, username: $username, color: $color)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PlayerJoinedPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$PlayerJoinedPayloadCopyWith(_PlayerJoinedPayload value, $Res Function(_PlayerJoinedPayload) _then) = __$PlayerJoinedPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String clientId, String username, String color
+});
+
+
+
+
+}
+/// @nodoc
+class __$PlayerJoinedPayloadCopyWithImpl<$Res>
+    implements _$PlayerJoinedPayloadCopyWith<$Res> {
+  __$PlayerJoinedPayloadCopyWithImpl(this._self, this._then);
+
+  final _PlayerJoinedPayload _self;
+  final $Res Function(_PlayerJoinedPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? clientId = null,Object? username = null,Object? color = null,}) {
+  return _then(_PlayerJoinedPayload(
+clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
+as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
+as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PlayerLeftPayload implements PacketPayload {
+  const _PlayerLeftPayload({required this.clientId, required this.reason, final  String? $type}): $type = $type ?? 'playerLeft';
+  factory _PlayerLeftPayload.fromJson(Map<String, dynamic> json) => _$PlayerLeftPayloadFromJson(json);
+
+ final  String clientId;
+ final  String reason;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PlayerLeftPayloadCopyWith<_PlayerLeftPayload> get copyWith => __$PlayerLeftPayloadCopyWithImpl<_PlayerLeftPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PlayerLeftPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PlayerLeftPayload&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.reason, reason) || other.reason == reason));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,clientId,reason);
+
+@override
+String toString() {
+  return 'PacketPayload.playerLeft(clientId: $clientId, reason: $reason)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PlayerLeftPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$PlayerLeftPayloadCopyWith(_PlayerLeftPayload value, $Res Function(_PlayerLeftPayload) _then) = __$PlayerLeftPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String clientId, String reason
+});
+
+
+
+
+}
+/// @nodoc
+class __$PlayerLeftPayloadCopyWithImpl<$Res>
+    implements _$PlayerLeftPayloadCopyWith<$Res> {
+  __$PlayerLeftPayloadCopyWithImpl(this._self, this._then);
+
+  final _PlayerLeftPayload _self;
+  final $Res Function(_PlayerLeftPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? clientId = null,Object? reason = null,}) {
+  return _then(_PlayerLeftPayload(
+clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
+as String,reason: null == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ReconnectPayload implements PacketPayload {
+  const _ReconnectPayload({required this.sessionToken, final  String? $type}): $type = $type ?? 'reconnect';
+  factory _ReconnectPayload.fromJson(Map<String, dynamic> json) => _$ReconnectPayloadFromJson(json);
+
+ final  String sessionToken;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ReconnectPayloadCopyWith<_ReconnectPayload> get copyWith => __$ReconnectPayloadCopyWithImpl<_ReconnectPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ReconnectPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ReconnectPayload&&(identical(other.sessionToken, sessionToken) || other.sessionToken == sessionToken));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,sessionToken);
+
+@override
+String toString() {
+  return 'PacketPayload.reconnect(sessionToken: $sessionToken)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ReconnectPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$ReconnectPayloadCopyWith(_ReconnectPayload value, $Res Function(_ReconnectPayload) _then) = __$ReconnectPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String sessionToken
+});
+
+
+
+
+}
+/// @nodoc
+class __$ReconnectPayloadCopyWithImpl<$Res>
+    implements _$ReconnectPayloadCopyWith<$Res> {
+  __$ReconnectPayloadCopyWithImpl(this._self, this._then);
+
+  final _ReconnectPayload _self;
+  final $Res Function(_ReconnectPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? sessionToken = null,}) {
+  return _then(_ReconnectPayload(
+sessionToken: null == sessionToken ? _self.sessionToken : sessionToken // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
 class _ReadyPayload implements PacketPayload {
   const _ReadyPayload({required this.isReady, final  String? $type}): $type = $type ?? 'ready';
   factory _ReadyPayload.fromJson(Map<String, dynamic> json) => _$ReadyPayloadFromJson(json);
@@ -398,6 +733,308 @@ as bool,
 /// @nodoc
 @JsonSerializable()
 
+class _StartGamePayload implements PacketPayload {
+  const _StartGamePayload({required this.firstTurnClientId, final  String? $type}): $type = $type ?? 'startGame';
+  factory _StartGamePayload.fromJson(Map<String, dynamic> json) => _$StartGamePayloadFromJson(json);
+
+ final  String firstTurnClientId;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$StartGamePayloadCopyWith<_StartGamePayload> get copyWith => __$StartGamePayloadCopyWithImpl<_StartGamePayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$StartGamePayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StartGamePayload&&(identical(other.firstTurnClientId, firstTurnClientId) || other.firstTurnClientId == firstTurnClientId));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,firstTurnClientId);
+
+@override
+String toString() {
+  return 'PacketPayload.startGame(firstTurnClientId: $firstTurnClientId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$StartGamePayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$StartGamePayloadCopyWith(_StartGamePayload value, $Res Function(_StartGamePayload) _then) = __$StartGamePayloadCopyWithImpl;
+@useResult
+$Res call({
+ String firstTurnClientId
+});
+
+
+
+
+}
+/// @nodoc
+class __$StartGamePayloadCopyWithImpl<$Res>
+    implements _$StartGamePayloadCopyWith<$Res> {
+  __$StartGamePayloadCopyWithImpl(this._self, this._then);
+
+  final _StartGamePayload _self;
+  final $Res Function(_StartGamePayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? firstTurnClientId = null,}) {
+  return _then(_StartGamePayload(
+firstTurnClientId: null == firstTurnClientId ? _self.firstTurnClientId : firstTurnClientId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _GameStateSnapshotPayload implements PacketPayload {
+  const _GameStateSnapshotPayload({required final  Map<String, dynamic> state, final  String? $type}): _state = state,$type = $type ?? 'gameStateSnapshot';
+  factory _GameStateSnapshotPayload.fromJson(Map<String, dynamic> json) => _$GameStateSnapshotPayloadFromJson(json);
+
+ final  Map<String, dynamic> _state;
+ Map<String, dynamic> get state {
+  if (_state is EqualUnmodifiableMapView) return _state;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_state);
+}
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GameStateSnapshotPayloadCopyWith<_GameStateSnapshotPayload> get copyWith => __$GameStateSnapshotPayloadCopyWithImpl<_GameStateSnapshotPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GameStateSnapshotPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameStateSnapshotPayload&&const DeepCollectionEquality().equals(other._state, _state));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_state));
+
+@override
+String toString() {
+  return 'PacketPayload.gameStateSnapshot(state: $state)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$GameStateSnapshotPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$GameStateSnapshotPayloadCopyWith(_GameStateSnapshotPayload value, $Res Function(_GameStateSnapshotPayload) _then) = __$GameStateSnapshotPayloadCopyWithImpl;
+@useResult
+$Res call({
+ Map<String, dynamic> state
+});
+
+
+
+
+}
+/// @nodoc
+class __$GameStateSnapshotPayloadCopyWithImpl<$Res>
+    implements _$GameStateSnapshotPayloadCopyWith<$Res> {
+  __$GameStateSnapshotPayloadCopyWithImpl(this._self, this._then);
+
+  final _GameStateSnapshotPayload _self;
+  final $Res Function(_GameStateSnapshotPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? state = null,}) {
+  return _then(_GameStateSnapshotPayload(
+state: null == state ? _self._state : state // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _NextTurnPayload implements PacketPayload {
+  const _NextTurnPayload({required this.activeClientId, required this.timeoutMs, final  String? $type}): $type = $type ?? 'nextTurn';
+  factory _NextTurnPayload.fromJson(Map<String, dynamic> json) => _$NextTurnPayloadFromJson(json);
+
+ final  String activeClientId;
+ final  int timeoutMs;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$NextTurnPayloadCopyWith<_NextTurnPayload> get copyWith => __$NextTurnPayloadCopyWithImpl<_NextTurnPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$NextTurnPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NextTurnPayload&&(identical(other.activeClientId, activeClientId) || other.activeClientId == activeClientId)&&(identical(other.timeoutMs, timeoutMs) || other.timeoutMs == timeoutMs));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,activeClientId,timeoutMs);
+
+@override
+String toString() {
+  return 'PacketPayload.nextTurn(activeClientId: $activeClientId, timeoutMs: $timeoutMs)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$NextTurnPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$NextTurnPayloadCopyWith(_NextTurnPayload value, $Res Function(_NextTurnPayload) _then) = __$NextTurnPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String activeClientId, int timeoutMs
+});
+
+
+
+
+}
+/// @nodoc
+class __$NextTurnPayloadCopyWithImpl<$Res>
+    implements _$NextTurnPayloadCopyWith<$Res> {
+  __$NextTurnPayloadCopyWithImpl(this._self, this._then);
+
+  final _NextTurnPayload _self;
+  final $Res Function(_NextTurnPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? activeClientId = null,Object? timeoutMs = null,}) {
+  return _then(_NextTurnPayload(
+activeClientId: null == activeClientId ? _self.activeClientId : activeClientId // ignore: cast_nullable_to_non_nullable
+as String,timeoutMs: null == timeoutMs ? _self.timeoutMs : timeoutMs // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _WinnerPayload implements PacketPayload {
+  const _WinnerPayload({required this.clientId, required this.rank, final  String? $type}): $type = $type ?? 'winner';
+  factory _WinnerPayload.fromJson(Map<String, dynamic> json) => _$WinnerPayloadFromJson(json);
+
+ final  String clientId;
+ final  int rank;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$WinnerPayloadCopyWith<_WinnerPayload> get copyWith => __$WinnerPayloadCopyWithImpl<_WinnerPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$WinnerPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WinnerPayload&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.rank, rank) || other.rank == rank));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,clientId,rank);
+
+@override
+String toString() {
+  return 'PacketPayload.winner(clientId: $clientId, rank: $rank)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$WinnerPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$WinnerPayloadCopyWith(_WinnerPayload value, $Res Function(_WinnerPayload) _then) = __$WinnerPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String clientId, int rank
+});
+
+
+
+
+}
+/// @nodoc
+class __$WinnerPayloadCopyWithImpl<$Res>
+    implements _$WinnerPayloadCopyWith<$Res> {
+  __$WinnerPayloadCopyWithImpl(this._self, this._then);
+
+  final _WinnerPayload _self;
+  final $Res Function(_WinnerPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? clientId = null,Object? rank = null,}) {
+  return _then(_WinnerPayload(
+clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
+as String,rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
 class _RollDicePayload implements PacketPayload {
   const _RollDicePayload({final  String? $type}): $type = $type ?? 'rollDice';
   factory _RollDicePayload.fromJson(Map<String, dynamic> json) => _$RollDicePayloadFromJson(json);
@@ -433,6 +1070,81 @@ String toString() {
 
 
 
+
+/// @nodoc
+@JsonSerializable()
+
+class _DiceResultPayload implements PacketPayload {
+  const _DiceResultPayload({required this.value, required this.rollerId, final  String? $type}): $type = $type ?? 'diceResult';
+  factory _DiceResultPayload.fromJson(Map<String, dynamic> json) => _$DiceResultPayloadFromJson(json);
+
+ final  int value;
+ final  String rollerId;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DiceResultPayloadCopyWith<_DiceResultPayload> get copyWith => __$DiceResultPayloadCopyWithImpl<_DiceResultPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$DiceResultPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiceResultPayload&&(identical(other.value, value) || other.value == value)&&(identical(other.rollerId, rollerId) || other.rollerId == rollerId));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,value,rollerId);
+
+@override
+String toString() {
+  return 'PacketPayload.diceResult(value: $value, rollerId: $rollerId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DiceResultPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$DiceResultPayloadCopyWith(_DiceResultPayload value, $Res Function(_DiceResultPayload) _then) = __$DiceResultPayloadCopyWithImpl;
+@useResult
+$Res call({
+ int value, String rollerId
+});
+
+
+
+
+}
+/// @nodoc
+class __$DiceResultPayloadCopyWithImpl<$Res>
+    implements _$DiceResultPayloadCopyWith<$Res> {
+  __$DiceResultPayloadCopyWithImpl(this._self, this._then);
+
+  final _DiceResultPayload _self;
+  final $Res Function(_DiceResultPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? value = null,Object? rollerId = null,}) {
+  return _then(_DiceResultPayload(
+value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,rollerId: null == rollerId ? _self.rollerId : rollerId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
@@ -501,6 +1213,245 @@ class __$MoveTokenPayloadCopyWithImpl<$Res>
   return _then(_MoveTokenPayload(
 tokenId: null == tokenId ? _self.tokenId : tokenId // ignore: cast_nullable_to_non_nullable
 as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _MoveTokenEventPayload implements PacketPayload {
+  const _MoveTokenEventPayload({required this.tokenId, required final  List<int> path, final  String? $type}): _path = path,$type = $type ?? 'moveTokenEvent';
+  factory _MoveTokenEventPayload.fromJson(Map<String, dynamic> json) => _$MoveTokenEventPayloadFromJson(json);
+
+ final  String tokenId;
+ final  List<int> _path;
+ List<int> get path {
+  if (_path is EqualUnmodifiableListView) return _path;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_path);
+}
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$MoveTokenEventPayloadCopyWith<_MoveTokenEventPayload> get copyWith => __$MoveTokenEventPayloadCopyWithImpl<_MoveTokenEventPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$MoveTokenEventPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MoveTokenEventPayload&&(identical(other.tokenId, tokenId) || other.tokenId == tokenId)&&const DeepCollectionEquality().equals(other._path, _path));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tokenId,const DeepCollectionEquality().hash(_path));
+
+@override
+String toString() {
+  return 'PacketPayload.moveTokenEvent(tokenId: $tokenId, path: $path)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$MoveTokenEventPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$MoveTokenEventPayloadCopyWith(_MoveTokenEventPayload value, $Res Function(_MoveTokenEventPayload) _then) = __$MoveTokenEventPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String tokenId, List<int> path
+});
+
+
+
+
+}
+/// @nodoc
+class __$MoveTokenEventPayloadCopyWithImpl<$Res>
+    implements _$MoveTokenEventPayloadCopyWith<$Res> {
+  __$MoveTokenEventPayloadCopyWithImpl(this._self, this._then);
+
+  final _MoveTokenEventPayload _self;
+  final $Res Function(_MoveTokenEventPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? tokenId = null,Object? path = null,}) {
+  return _then(_MoveTokenEventPayload(
+tokenId: null == tokenId ? _self.tokenId : tokenId // ignore: cast_nullable_to_non_nullable
+as String,path: null == path ? _self._path : path // ignore: cast_nullable_to_non_nullable
+as List<int>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _CapturePayload implements PacketPayload {
+  const _CapturePayload({required this.capturingTokenId, required this.capturedTokenId, required final  List<int> returnPath, final  String? $type}): _returnPath = returnPath,$type = $type ?? 'capture';
+  factory _CapturePayload.fromJson(Map<String, dynamic> json) => _$CapturePayloadFromJson(json);
+
+ final  String capturingTokenId;
+ final  String capturedTokenId;
+ final  List<int> _returnPath;
+ List<int> get returnPath {
+  if (_returnPath is EqualUnmodifiableListView) return _returnPath;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_returnPath);
+}
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CapturePayloadCopyWith<_CapturePayload> get copyWith => __$CapturePayloadCopyWithImpl<_CapturePayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CapturePayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CapturePayload&&(identical(other.capturingTokenId, capturingTokenId) || other.capturingTokenId == capturingTokenId)&&(identical(other.capturedTokenId, capturedTokenId) || other.capturedTokenId == capturedTokenId)&&const DeepCollectionEquality().equals(other._returnPath, _returnPath));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,capturingTokenId,capturedTokenId,const DeepCollectionEquality().hash(_returnPath));
+
+@override
+String toString() {
+  return 'PacketPayload.capture(capturingTokenId: $capturingTokenId, capturedTokenId: $capturedTokenId, returnPath: $returnPath)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CapturePayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$CapturePayloadCopyWith(_CapturePayload value, $Res Function(_CapturePayload) _then) = __$CapturePayloadCopyWithImpl;
+@useResult
+$Res call({
+ String capturingTokenId, String capturedTokenId, List<int> returnPath
+});
+
+
+
+
+}
+/// @nodoc
+class __$CapturePayloadCopyWithImpl<$Res>
+    implements _$CapturePayloadCopyWith<$Res> {
+  __$CapturePayloadCopyWithImpl(this._self, this._then);
+
+  final _CapturePayload _self;
+  final $Res Function(_CapturePayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? capturingTokenId = null,Object? capturedTokenId = null,Object? returnPath = null,}) {
+  return _then(_CapturePayload(
+capturingTokenId: null == capturingTokenId ? _self.capturingTokenId : capturingTokenId // ignore: cast_nullable_to_non_nullable
+as String,capturedTokenId: null == capturedTokenId ? _self.capturedTokenId : capturedTokenId // ignore: cast_nullable_to_non_nullable
+as String,returnPath: null == returnPath ? _self._returnPath : returnPath // ignore: cast_nullable_to_non_nullable
+as List<int>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AckPayload implements PacketPayload {
+  const _AckPayload({required this.ackType, required this.eventId, final  String? $type}): $type = $type ?? 'ack';
+  factory _AckPayload.fromJson(Map<String, dynamic> json) => _$AckPayloadFromJson(json);
+
+ final  String ackType;
+ final  int eventId;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AckPayloadCopyWith<_AckPayload> get copyWith => __$AckPayloadCopyWithImpl<_AckPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AckPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AckPayload&&(identical(other.ackType, ackType) || other.ackType == ackType)&&(identical(other.eventId, eventId) || other.eventId == eventId));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,ackType,eventId);
+
+@override
+String toString() {
+  return 'PacketPayload.ack(ackType: $ackType, eventId: $eventId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AckPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$AckPayloadCopyWith(_AckPayload value, $Res Function(_AckPayload) _then) = __$AckPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String ackType, int eventId
+});
+
+
+
+
+}
+/// @nodoc
+class __$AckPayloadCopyWithImpl<$Res>
+    implements _$AckPayloadCopyWith<$Res> {
+  __$AckPayloadCopyWithImpl(this._self, this._then);
+
+  final _AckPayload _self;
+  final $Res Function(_AckPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? ackType = null,Object? eventId = null,}) {
+  return _then(_AckPayload(
+ackType: null == ackType ? _self.ackType : ackType // ignore: cast_nullable_to_non_nullable
+as String,eventId: null == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
