@@ -81,23 +81,26 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       sizeFactor: animation,
       child: FadeTransition(
         opacity: animation,
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: _getColorForPlayer(player.color),
-            child: Icon(
-              isPlayerHost ? Icons.star : Icons.person,
-              color: Colors.white,
+        child: Semantics(
+          label: '${player.name}, ${isPlayerHost ? "Host" : "Player"}, Status: ${player.isReady ? "Ready" : "Not Ready"}',
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: _getColorForPlayer(player.color),
+              child: Icon(
+                isPlayerHost ? Icons.star : Icons.person,
+                color: Colors.white,
+                semanticLabel: isPlayerHost ? 'Host Icon' : 'Player Icon',
+              ),
             ),
-          ),
-          title: Text(
-            player.name + (isMe ? ' (You)' : ''),
-            style: TextStyle(
-              fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
+            title: Text(
+              player.name + (isMe ? ' (You)' : ''),
+              style: TextStyle(
+                fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
-          ),
-          trailing: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
+            trailing: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
               color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
@@ -112,6 +115,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                 fontSize: 12,
               ),
             ),
+          ),
           ),
         ),
       ),

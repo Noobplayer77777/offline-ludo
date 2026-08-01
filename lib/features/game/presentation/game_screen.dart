@@ -112,6 +112,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.settings, color: Colors.white),
+                    tooltip: 'Settings',
                     onPressed: () {
                       AudioManager.instance.playSfx('audio/sfx_click.mp3');
                       showDialog(
