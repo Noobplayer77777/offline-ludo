@@ -164,6 +164,27 @@ class HostServerManager {
     transport.sendMessage(jsonEncode(packet.toJson()));
   }
 
+  void disconnectClient(String clientId) {
+    final client = _clients.remove(clientId);
+    if (client != null) {
+      // Notify the client they are kicked before closing the socket
+      try {
+        _sendToTransport(client.transport, PacketPayload.playerLeft(clientId: clientId, reason: 'kicked'));
+      } catch (_) {}
+      
+      client.dispose();
+      
+      // Notify the host engine
+      _packetController.add(Packet(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        clientId: clientId,
+        timestamp: DateTime.now(),
+        sequenceId: 0,
+        payload: PacketPayload.playerLeft(clientId: clientId, reason: 'kicked'),
+      ));
+    }
+  }
+
   Future<void> stop() async {
     _heartbeatTimer?.cancel();
     for (final client in _clients.values) {

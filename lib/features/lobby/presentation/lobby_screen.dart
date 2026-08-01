@@ -98,24 +98,38 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
                 fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
               ),
             ),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-              color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: player.isReady ? Colors.green : Colors.orange,
-              ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!isMe && _currentPlayers.isNotEmpty && _currentPlayers.first.id == myId)
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle, color: Colors.red),
+                    tooltip: 'Kick Player',
+                    onPressed: () {
+                      AudioManager.instance.playSfx('audio/sfx_click.mp3');
+                      ref.read(lobbyServiceProvider).kickPlayer(player.id);
+                    },
+                  ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: player.isReady ? Colors.green : Colors.orange,
+                    ),
+                  ),
+                  child: Text(
+                    player.isReady ? 'READY' : 'WAITING',
+                    style: TextStyle(
+                      color: player.isReady ? Colors.green : Colors.orange,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            child: Text(
-              player.isReady ? 'READY' : 'WAITING',
-              style: TextStyle(
-                color: player.isReady ? Colors.green : Colors.orange,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-            ),
-          ),
           ),
         ),
       ),

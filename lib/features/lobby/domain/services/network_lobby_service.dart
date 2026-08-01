@@ -50,6 +50,12 @@ class NetworkLobbyService implements LobbyService {
             }
           }
         },
+        playerLeft: (p) {
+          if (p.clientId == _ref.read(currentPlayerIdProvider)) {
+            _ref.read(lobbyStateProvider.notifier).updateLobby(null);
+            _ref.read(clientNetworkManagerProvider).disconnect();
+          }
+        },
       );
     });
   }
@@ -117,14 +123,23 @@ class NetworkLobbyService implements LobbyService {
     final ws = IOWebSocketChannel.connect('ws://$roomCode:5555');
     final transport = WebSocketTransport(ws);
 
-    final clientId = 'client_${DateTime.now().millisecondsSinceEpoch}';
-    _ref.read(currentPlayerIdProvider.notifier).setId(clientId);
+    var clientId = _ref.read(currentPlayerIdProvider);
+    if (clientId == null || !clientId.startsWith('client_')) {
+      clientId = 'client_${DateTime.now().millisecondsSinceEpoch}';
+      _ref.read(currentPlayerIdProvider.notifier).setId(clientId);
+    }
 
     final client = _ref.read(clientNetworkManagerProvider);
     client.attachTransport(transport);
     client.setClientId(clientId);
 
     client.sendIntent(PacketPayload.joinRoom(username: playerName, version: '1.0'));
+  }
+
+  @override
+  Future<void> kickPlayer(String targetClientId) async {
+    final client = _ref.read(clientNetworkManagerProvider);
+    client.sendIntent(PacketPayload.kickPlayer(targetClientId: targetClientId, reason: 'Kicked by host'));
   }
 
   @override

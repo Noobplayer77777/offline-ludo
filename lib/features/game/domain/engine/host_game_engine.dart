@@ -59,6 +59,13 @@ class HostGameEngine {
           _broadcastLobbySnapshot();
         }
       },
+      kickPlayer: (p) {
+        if (packet.clientId.startsWith('host_')) {
+          _lobbyPlayers.remove(p.targetClientId);
+          _server?.disconnectClient(p.targetClientId);
+          _broadcastLobbySnapshot();
+        }
+      },
       startGame: (p) {
         _startGame(p.firstTurnClientId);
       },

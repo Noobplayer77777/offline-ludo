@@ -35,6 +35,10 @@ PacketPayload _$PacketPayloadFromJson(
           return _ReadyPayload.fromJson(
             json
           );
+                case 'kickPlayer':
+          return _KickPlayerPayload.fromJson(
+            json
+          );
                 case 'startGame':
           return _StartGamePayload.fromJson(
             json
@@ -145,7 +149,7 @@ extension PacketPayloadPatterns on PacketPayload {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _JoinRoomPayload value)?  joinRoom,TResult Function( _PlayerJoinedPayload value)?  playerJoined,TResult Function( _PlayerLeftPayload value)?  playerLeft,TResult Function( _ReconnectPayload value)?  reconnect,TResult Function( _ReadyPayload value)?  ready,TResult Function( _StartGamePayload value)?  startGame,TResult Function( _GameStateSnapshotPayload value)?  gameStateSnapshot,TResult Function( _NextTurnPayload value)?  nextTurn,TResult Function( _WinnerPayload value)?  winner,TResult Function( _RollDicePayload value)?  rollDice,TResult Function( _DiceResultPayload value)?  diceResult,TResult Function( _MoveTokenPayload value)?  moveToken,TResult Function( _MoveTokenEventPayload value)?  moveTokenEvent,TResult Function( _CapturePayload value)?  capture,TResult Function( _AckPayload value)?  ack,TResult Function( _PingPayload value)?  ping,TResult Function( _PongPayload value)?  pong,TResult Function( _ErrorPayload value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _JoinRoomPayload value)?  joinRoom,TResult Function( _PlayerJoinedPayload value)?  playerJoined,TResult Function( _PlayerLeftPayload value)?  playerLeft,TResult Function( _ReconnectPayload value)?  reconnect,TResult Function( _ReadyPayload value)?  ready,TResult Function( _KickPlayerPayload value)?  kickPlayer,TResult Function( _StartGamePayload value)?  startGame,TResult Function( _GameStateSnapshotPayload value)?  gameStateSnapshot,TResult Function( _NextTurnPayload value)?  nextTurn,TResult Function( _WinnerPayload value)?  winner,TResult Function( _RollDicePayload value)?  rollDice,TResult Function( _DiceResultPayload value)?  diceResult,TResult Function( _MoveTokenPayload value)?  moveToken,TResult Function( _MoveTokenEventPayload value)?  moveTokenEvent,TResult Function( _CapturePayload value)?  capture,TResult Function( _AckPayload value)?  ack,TResult Function( _PingPayload value)?  ping,TResult Function( _PongPayload value)?  pong,TResult Function( _ErrorPayload value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
@@ -153,7 +157,8 @@ return joinRoom(_that);case _PlayerJoinedPayload() when playerJoined != null:
 return playerJoined(_that);case _PlayerLeftPayload() when playerLeft != null:
 return playerLeft(_that);case _ReconnectPayload() when reconnect != null:
 return reconnect(_that);case _ReadyPayload() when ready != null:
-return ready(_that);case _StartGamePayload() when startGame != null:
+return ready(_that);case _KickPlayerPayload() when kickPlayer != null:
+return kickPlayer(_that);case _StartGamePayload() when startGame != null:
 return startGame(_that);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
 return gameStateSnapshot(_that);case _NextTurnPayload() when nextTurn != null:
 return nextTurn(_that);case _WinnerPayload() when winner != null:
@@ -184,7 +189,7 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _JoinRoomPayload value)  joinRoom,required TResult Function( _PlayerJoinedPayload value)  playerJoined,required TResult Function( _PlayerLeftPayload value)  playerLeft,required TResult Function( _ReconnectPayload value)  reconnect,required TResult Function( _ReadyPayload value)  ready,required TResult Function( _StartGamePayload value)  startGame,required TResult Function( _GameStateSnapshotPayload value)  gameStateSnapshot,required TResult Function( _NextTurnPayload value)  nextTurn,required TResult Function( _WinnerPayload value)  winner,required TResult Function( _RollDicePayload value)  rollDice,required TResult Function( _DiceResultPayload value)  diceResult,required TResult Function( _MoveTokenPayload value)  moveToken,required TResult Function( _MoveTokenEventPayload value)  moveTokenEvent,required TResult Function( _CapturePayload value)  capture,required TResult Function( _AckPayload value)  ack,required TResult Function( _PingPayload value)  ping,required TResult Function( _PongPayload value)  pong,required TResult Function( _ErrorPayload value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _JoinRoomPayload value)  joinRoom,required TResult Function( _PlayerJoinedPayload value)  playerJoined,required TResult Function( _PlayerLeftPayload value)  playerLeft,required TResult Function( _ReconnectPayload value)  reconnect,required TResult Function( _ReadyPayload value)  ready,required TResult Function( _KickPlayerPayload value)  kickPlayer,required TResult Function( _StartGamePayload value)  startGame,required TResult Function( _GameStateSnapshotPayload value)  gameStateSnapshot,required TResult Function( _NextTurnPayload value)  nextTurn,required TResult Function( _WinnerPayload value)  winner,required TResult Function( _RollDicePayload value)  rollDice,required TResult Function( _DiceResultPayload value)  diceResult,required TResult Function( _MoveTokenPayload value)  moveToken,required TResult Function( _MoveTokenEventPayload value)  moveTokenEvent,required TResult Function( _CapturePayload value)  capture,required TResult Function( _AckPayload value)  ack,required TResult Function( _PingPayload value)  ping,required TResult Function( _PongPayload value)  pong,required TResult Function( _ErrorPayload value)  error,}){
 final _that = this;
 switch (_that) {
 case _JoinRoomPayload():
@@ -192,7 +197,8 @@ return joinRoom(_that);case _PlayerJoinedPayload():
 return playerJoined(_that);case _PlayerLeftPayload():
 return playerLeft(_that);case _ReconnectPayload():
 return reconnect(_that);case _ReadyPayload():
-return ready(_that);case _StartGamePayload():
+return ready(_that);case _KickPlayerPayload():
+return kickPlayer(_that);case _StartGamePayload():
 return startGame(_that);case _GameStateSnapshotPayload():
 return gameStateSnapshot(_that);case _NextTurnPayload():
 return nextTurn(_that);case _WinnerPayload():
@@ -219,7 +225,7 @@ return error(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _JoinRoomPayload value)?  joinRoom,TResult? Function( _PlayerJoinedPayload value)?  playerJoined,TResult? Function( _PlayerLeftPayload value)?  playerLeft,TResult? Function( _ReconnectPayload value)?  reconnect,TResult? Function( _ReadyPayload value)?  ready,TResult? Function( _StartGamePayload value)?  startGame,TResult? Function( _GameStateSnapshotPayload value)?  gameStateSnapshot,TResult? Function( _NextTurnPayload value)?  nextTurn,TResult? Function( _WinnerPayload value)?  winner,TResult? Function( _RollDicePayload value)?  rollDice,TResult? Function( _DiceResultPayload value)?  diceResult,TResult? Function( _MoveTokenPayload value)?  moveToken,TResult? Function( _MoveTokenEventPayload value)?  moveTokenEvent,TResult? Function( _CapturePayload value)?  capture,TResult? Function( _AckPayload value)?  ack,TResult? Function( _PingPayload value)?  ping,TResult? Function( _PongPayload value)?  pong,TResult? Function( _ErrorPayload value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _JoinRoomPayload value)?  joinRoom,TResult? Function( _PlayerJoinedPayload value)?  playerJoined,TResult? Function( _PlayerLeftPayload value)?  playerLeft,TResult? Function( _ReconnectPayload value)?  reconnect,TResult? Function( _ReadyPayload value)?  ready,TResult? Function( _KickPlayerPayload value)?  kickPlayer,TResult? Function( _StartGamePayload value)?  startGame,TResult? Function( _GameStateSnapshotPayload value)?  gameStateSnapshot,TResult? Function( _NextTurnPayload value)?  nextTurn,TResult? Function( _WinnerPayload value)?  winner,TResult? Function( _RollDicePayload value)?  rollDice,TResult? Function( _DiceResultPayload value)?  diceResult,TResult? Function( _MoveTokenPayload value)?  moveToken,TResult? Function( _MoveTokenEventPayload value)?  moveTokenEvent,TResult? Function( _CapturePayload value)?  capture,TResult? Function( _AckPayload value)?  ack,TResult? Function( _PingPayload value)?  ping,TResult? Function( _PongPayload value)?  pong,TResult? Function( _ErrorPayload value)?  error,}){
 final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
@@ -227,7 +233,8 @@ return joinRoom(_that);case _PlayerJoinedPayload() when playerJoined != null:
 return playerJoined(_that);case _PlayerLeftPayload() when playerLeft != null:
 return playerLeft(_that);case _ReconnectPayload() when reconnect != null:
 return reconnect(_that);case _ReadyPayload() when ready != null:
-return ready(_that);case _StartGamePayload() when startGame != null:
+return ready(_that);case _KickPlayerPayload() when kickPlayer != null:
+return kickPlayer(_that);case _StartGamePayload() when startGame != null:
 return startGame(_that);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
 return gameStateSnapshot(_that);case _NextTurnPayload() when nextTurn != null:
 return nextTurn(_that);case _WinnerPayload() when winner != null:
@@ -257,14 +264,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String username,  String version)?  joinRoom,TResult Function( String clientId,  String username,  String color)?  playerJoined,TResult Function( String clientId,  String reason)?  playerLeft,TResult Function( String sessionToken)?  reconnect,TResult Function( bool isReady)?  ready,TResult Function( String firstTurnClientId)?  startGame,TResult Function( Map<String, dynamic> state)?  gameStateSnapshot,TResult Function( String activeClientId,  int timeoutMs)?  nextTurn,TResult Function( String clientId,  int rank)?  winner,TResult Function()?  rollDice,TResult Function( int value,  String rollerId)?  diceResult,TResult Function( String tokenId)?  moveToken,TResult Function( String tokenId,  List<int> path)?  moveTokenEvent,TResult Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)?  capture,TResult Function( String ackType,  int eventId)?  ack,TResult Function()?  ping,TResult Function()?  pong,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String username,  String version)?  joinRoom,TResult Function( String clientId,  String username,  String color)?  playerJoined,TResult Function( String clientId,  String reason)?  playerLeft,TResult Function( String sessionToken)?  reconnect,TResult Function( bool isReady)?  ready,TResult Function( String targetClientId,  String reason)?  kickPlayer,TResult Function( String firstTurnClientId)?  startGame,TResult Function( Map<String, dynamic> state)?  gameStateSnapshot,TResult Function( String activeClientId,  int timeoutMs)?  nextTurn,TResult Function( String clientId,  int rank)?  winner,TResult Function()?  rollDice,TResult Function( int value,  String rollerId)?  diceResult,TResult Function( String tokenId)?  moveToken,TResult Function( String tokenId,  List<int> path)?  moveTokenEvent,TResult Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)?  capture,TResult Function( String ackType,  int eventId)?  ack,TResult Function()?  ping,TResult Function()?  pong,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
 return joinRoom(_that.username,_that.version);case _PlayerJoinedPayload() when playerJoined != null:
 return playerJoined(_that.clientId,_that.username,_that.color);case _PlayerLeftPayload() when playerLeft != null:
 return playerLeft(_that.clientId,_that.reason);case _ReconnectPayload() when reconnect != null:
 return reconnect(_that.sessionToken);case _ReadyPayload() when ready != null:
-return ready(_that.isReady);case _StartGamePayload() when startGame != null:
+return ready(_that.isReady);case _KickPlayerPayload() when kickPlayer != null:
+return kickPlayer(_that.targetClientId,_that.reason);case _StartGamePayload() when startGame != null:
 return startGame(_that.firstTurnClientId);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
 return gameStateSnapshot(_that.state);case _NextTurnPayload() when nextTurn != null:
 return nextTurn(_that.activeClientId,_that.timeoutMs);case _WinnerPayload() when winner != null:
@@ -295,14 +303,15 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String username,  String version)  joinRoom,required TResult Function( String clientId,  String username,  String color)  playerJoined,required TResult Function( String clientId,  String reason)  playerLeft,required TResult Function( String sessionToken)  reconnect,required TResult Function( bool isReady)  ready,required TResult Function( String firstTurnClientId)  startGame,required TResult Function( Map<String, dynamic> state)  gameStateSnapshot,required TResult Function( String activeClientId,  int timeoutMs)  nextTurn,required TResult Function( String clientId,  int rank)  winner,required TResult Function()  rollDice,required TResult Function( int value,  String rollerId)  diceResult,required TResult Function( String tokenId)  moveToken,required TResult Function( String tokenId,  List<int> path)  moveTokenEvent,required TResult Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)  capture,required TResult Function( String ackType,  int eventId)  ack,required TResult Function()  ping,required TResult Function()  pong,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String username,  String version)  joinRoom,required TResult Function( String clientId,  String username,  String color)  playerJoined,required TResult Function( String clientId,  String reason)  playerLeft,required TResult Function( String sessionToken)  reconnect,required TResult Function( bool isReady)  ready,required TResult Function( String targetClientId,  String reason)  kickPlayer,required TResult Function( String firstTurnClientId)  startGame,required TResult Function( Map<String, dynamic> state)  gameStateSnapshot,required TResult Function( String activeClientId,  int timeoutMs)  nextTurn,required TResult Function( String clientId,  int rank)  winner,required TResult Function()  rollDice,required TResult Function( int value,  String rollerId)  diceResult,required TResult Function( String tokenId)  moveToken,required TResult Function( String tokenId,  List<int> path)  moveTokenEvent,required TResult Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)  capture,required TResult Function( String ackType,  int eventId)  ack,required TResult Function()  ping,required TResult Function()  pong,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _JoinRoomPayload():
 return joinRoom(_that.username,_that.version);case _PlayerJoinedPayload():
 return playerJoined(_that.clientId,_that.username,_that.color);case _PlayerLeftPayload():
 return playerLeft(_that.clientId,_that.reason);case _ReconnectPayload():
 return reconnect(_that.sessionToken);case _ReadyPayload():
-return ready(_that.isReady);case _StartGamePayload():
+return ready(_that.isReady);case _KickPlayerPayload():
+return kickPlayer(_that.targetClientId,_that.reason);case _StartGamePayload():
 return startGame(_that.firstTurnClientId);case _GameStateSnapshotPayload():
 return gameStateSnapshot(_that.state);case _NextTurnPayload():
 return nextTurn(_that.activeClientId,_that.timeoutMs);case _WinnerPayload():
@@ -329,14 +338,15 @@ return error(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String username,  String version)?  joinRoom,TResult? Function( String clientId,  String username,  String color)?  playerJoined,TResult? Function( String clientId,  String reason)?  playerLeft,TResult? Function( String sessionToken)?  reconnect,TResult? Function( bool isReady)?  ready,TResult? Function( String firstTurnClientId)?  startGame,TResult? Function( Map<String, dynamic> state)?  gameStateSnapshot,TResult? Function( String activeClientId,  int timeoutMs)?  nextTurn,TResult? Function( String clientId,  int rank)?  winner,TResult? Function()?  rollDice,TResult? Function( int value,  String rollerId)?  diceResult,TResult? Function( String tokenId)?  moveToken,TResult? Function( String tokenId,  List<int> path)?  moveTokenEvent,TResult? Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)?  capture,TResult? Function( String ackType,  int eventId)?  ack,TResult? Function()?  ping,TResult? Function()?  pong,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String username,  String version)?  joinRoom,TResult? Function( String clientId,  String username,  String color)?  playerJoined,TResult? Function( String clientId,  String reason)?  playerLeft,TResult? Function( String sessionToken)?  reconnect,TResult? Function( bool isReady)?  ready,TResult? Function( String targetClientId,  String reason)?  kickPlayer,TResult? Function( String firstTurnClientId)?  startGame,TResult? Function( Map<String, dynamic> state)?  gameStateSnapshot,TResult? Function( String activeClientId,  int timeoutMs)?  nextTurn,TResult? Function( String clientId,  int rank)?  winner,TResult? Function()?  rollDice,TResult? Function( int value,  String rollerId)?  diceResult,TResult? Function( String tokenId)?  moveToken,TResult? Function( String tokenId,  List<int> path)?  moveTokenEvent,TResult? Function( String capturingTokenId,  String capturedTokenId,  List<int> returnPath)?  capture,TResult? Function( String ackType,  int eventId)?  ack,TResult? Function()?  ping,TResult? Function()?  pong,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _JoinRoomPayload() when joinRoom != null:
 return joinRoom(_that.username,_that.version);case _PlayerJoinedPayload() when playerJoined != null:
 return playerJoined(_that.clientId,_that.username,_that.color);case _PlayerLeftPayload() when playerLeft != null:
 return playerLeft(_that.clientId,_that.reason);case _ReconnectPayload() when reconnect != null:
 return reconnect(_that.sessionToken);case _ReadyPayload() when ready != null:
-return ready(_that.isReady);case _StartGamePayload() when startGame != null:
+return ready(_that.isReady);case _KickPlayerPayload() when kickPlayer != null:
+return kickPlayer(_that.targetClientId,_that.reason);case _StartGamePayload() when startGame != null:
 return startGame(_that.firstTurnClientId);case _GameStateSnapshotPayload() when gameStateSnapshot != null:
 return gameStateSnapshot(_that.state);case _NextTurnPayload() when nextTurn != null:
 return nextTurn(_that.activeClientId,_that.timeoutMs);case _WinnerPayload() when winner != null:
@@ -724,6 +734,81 @@ class __$ReadyPayloadCopyWithImpl<$Res>
   return _then(_ReadyPayload(
 isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _KickPlayerPayload implements PacketPayload {
+  const _KickPlayerPayload({required this.targetClientId, required this.reason, final  String? $type}): $type = $type ?? 'kickPlayer';
+  factory _KickPlayerPayload.fromJson(Map<String, dynamic> json) => _$KickPlayerPayloadFromJson(json);
+
+ final  String targetClientId;
+ final  String reason;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$KickPlayerPayloadCopyWith<_KickPlayerPayload> get copyWith => __$KickPlayerPayloadCopyWithImpl<_KickPlayerPayload>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$KickPlayerPayloadToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _KickPlayerPayload&&(identical(other.targetClientId, targetClientId) || other.targetClientId == targetClientId)&&(identical(other.reason, reason) || other.reason == reason));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,targetClientId,reason);
+
+@override
+String toString() {
+  return 'PacketPayload.kickPlayer(targetClientId: $targetClientId, reason: $reason)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$KickPlayerPayloadCopyWith<$Res> implements $PacketPayloadCopyWith<$Res> {
+  factory _$KickPlayerPayloadCopyWith(_KickPlayerPayload value, $Res Function(_KickPlayerPayload) _then) = __$KickPlayerPayloadCopyWithImpl;
+@useResult
+$Res call({
+ String targetClientId, String reason
+});
+
+
+
+
+}
+/// @nodoc
+class __$KickPlayerPayloadCopyWithImpl<$Res>
+    implements _$KickPlayerPayloadCopyWith<$Res> {
+  __$KickPlayerPayloadCopyWithImpl(this._self, this._then);
+
+  final _KickPlayerPayload _self;
+  final $Res Function(_KickPlayerPayload) _then;
+
+/// Create a copy of PacketPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? targetClientId = null,Object? reason = null,}) {
+  return _then(_KickPlayerPayload(
+targetClientId: null == targetClientId ? _self.targetClientId : targetClientId // ignore: cast_nullable_to_non_nullable
+as String,reason: null == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
