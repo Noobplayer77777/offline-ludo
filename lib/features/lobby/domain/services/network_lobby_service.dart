@@ -169,10 +169,10 @@ class NetworkLobbyService implements LobbyService {
 
   @override
   Future<void> startGame() async {
-    final server = _ref.read(hostServerManagerProvider);
+    final client = _ref.read(clientNetworkManagerProvider);
     final lobby = _ref.read(lobbyStateProvider);
     if (lobby != null && lobby.players.isNotEmpty) {
-      server.broadcast(PacketPayload.startGame(firstTurnClientId: lobby.players.first.id));
+      client.sendIntent(PacketPayload.startGame(firstTurnClientId: lobby.players.first.id));
     }
   }
 }
