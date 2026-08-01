@@ -61,9 +61,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final isMyTurn = gameState.activePlayerId == myPlayerId;
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey.shade900,
-      body: SafeArea(
-        child: Column(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/board_bg.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -218,6 +224,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               ),
           ],
         ),
+      ),
       ),
     );
   }

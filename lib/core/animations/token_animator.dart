@@ -165,7 +165,7 @@ class _TokenAnimatorState extends State<TokenAnimator> with TickerProviderStateM
             height: widget.cellSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: BoardGeometry.getColorForPlayer(widget.color),
+              color: Colors.black,
               border: Border.all(color: Colors.white, width: 2),
               boxShadow: [
                 BoxShadow(
@@ -174,6 +174,14 @@ class _TokenAnimatorState extends State<TokenAnimator> with TickerProviderStateM
                   offset: const Offset(0, 2),
                 )
               ],
+              image: DecorationImage(
+                image: const AssetImage('assets/images/ludo_token.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  BoardGeometry.getColorForPlayer(widget.color),
+                  BlendMode.color,
+                ),
+              ),
             ),
           ),
         ),
