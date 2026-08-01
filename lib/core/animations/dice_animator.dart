@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:offline_ludo/core/audio/audio_manager.dart';
 import 'package:offline_ludo/core/animations/ludo_animations.dart';
 
 class DiceAnimator extends StatefulWidget {
@@ -59,18 +60,23 @@ class _DiceAnimatorState extends State<DiceAnimator> with SingleTickerProviderSt
     });
     
     if (widget.hasRolled) {
-      _controller.forward(from: 0.0);
+      _startRollAnimation();
     }
+  }
+
+  void _startRollAnimation() {
+    AudioManager.instance.playSfx('audio/sfx_dice.mp3');
+    _controller.forward(from: 0.0);
   }
 
   @override
   void didUpdateWidget(covariant DiceAnimator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.hasRolled && !oldWidget.hasRolled) {
-      _controller.forward(from: 0.0);
+      _startRollAnimation();
     } else if (widget.hasRolled && oldWidget.hasRolled && widget.value != oldWidget.value) {
       // Re-rolled somehow (e.g. got a 6)
-      _controller.forward(from: 0.0);
+      _startRollAnimation();
     } else if (!widget.hasRolled) {
       setState(() {
         _displayValue = widget.value;

@@ -8,6 +8,8 @@ import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provide
 import 'package:offline_ludo/core/animations/dice_animator.dart';
 import 'package:offline_ludo/core/animations/token_animator.dart';
 import 'package:offline_ludo/core/animations/looping_animator.dart';
+import 'package:offline_ludo/core/audio/audio_manager.dart';
+import 'package:offline_ludo/features/settings/presentation/settings_dialog.dart';
 import 'package:confetti/confetti.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
@@ -24,10 +26,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   void initState() {
     super.initState();
     _confettiController = ConfettiController(duration: const Duration(seconds: 5));
+    // Start BGM
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AudioManager.instance.playBgm('audio/bgm_game.mp3');
+    });
   }
 
   @override
   void dispose() {
+    AudioManager.instance.stopBgm();
     _confettiController.dispose();
     super.dispose();
   }
@@ -40,6 +47,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     // Trigger confetti on win
     ref.listen(gameStateProvider, (previous, next) {
       if (previous?.winnerId == null && next?.winnerId != null) {
+        AudioManager.instance.playSfx('audio/sfx_win.mp3');
         _confettiController.play();
       }
     });
@@ -102,7 +110,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 24), // Spacer to balance WiFi icon
+                  IconButton(
+                    icon: const Icon(Icons.settings, color: Colors.white),
+                    onPressed: () {
+                      AudioManager.instance.playSfx('audio/sfx_click.mp3');
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => const SettingsDialog(),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

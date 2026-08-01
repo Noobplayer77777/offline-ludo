@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
 import 'package:offline_ludo/features/game/domain/models/player.dart';
 import 'package:offline_ludo/features/game/presentation/providers/game_provider.dart';
+import 'package:offline_ludo/core/audio/audio_manager.dart';
+import 'package:offline_ludo/features/settings/presentation/settings_dialog.dart';
 class LobbyScreen extends ConsumerStatefulWidget {
   const LobbyScreen({super.key});
 
@@ -151,9 +153,22 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(lobby.room.name),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              AudioManager.instance.playSfx('audio/sfx_click.mp3');
+              showDialog(
+                context: context,
+                builder: (ctx) => const SettingsDialog(),
+              );
+            },
+          ),
+        ],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            AudioManager.instance.playSfx('audio/sfx_click.mp3');
             ref.read(lobbyServiceProvider).leaveRoom();
             if (context.mounted) {
               context.go('/');
@@ -226,7 +241,10 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
             // Action Buttons
             if (myPlayer != null && !isHost)
               ElevatedButton.icon(
-                onPressed: () => ref.read(lobbyServiceProvider).toggleReady(),
+                onPressed: () {
+                  AudioManager.instance.playSfx('audio/sfx_click.mp3');
+                  ref.read(lobbyServiceProvider).toggleReady();
+                },
                 icon: Icon(myPlayer.isReady ? Icons.close : Icons.check),
                 label: Text(myPlayer.isReady ? 'Cancel Ready' : 'Ready Up'),
                 style: ElevatedButton.styleFrom(
@@ -241,6 +259,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
               ElevatedButton.icon(
                 onPressed: allReady
                     ? () {
+                        AudioManager.instance.playSfx('audio/sfx_click.mp3');
                         // TODO: Navigate to GameScreen when StartGame is called
                         ref.read(lobbyServiceProvider).startGame();
                         ScaffoldMessenger.of(context).showSnackBar(

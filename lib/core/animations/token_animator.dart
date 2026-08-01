@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:offline_ludo/core/animations/ludo_animations.dart';
+import 'package:offline_ludo/core/audio/audio_manager.dart';
 import 'package:offline_ludo/features/game/domain/board/board_geometry.dart';
 import 'package:offline_ludo/features/game/domain/models/token.dart';
 import 'package:offline_ludo/features/game/domain/models/player.dart';
@@ -97,11 +98,17 @@ class _TokenAnimatorState extends State<TokenAnimator> with TickerProviderStateM
   void _processNextHop() {
     if (_hopQueue.isEmpty) {
       _isHopping = false;
+      // Reached final destination. Check if it's the home center.
+      if (widget.token.position == 57) {
+        AudioManager.instance.playSfx('audio/sfx_home.mp3');
+      }
       return;
     }
     
     _isHopping = true;
     final nextPos = _hopQueue.removeAt(0);
+    
+    AudioManager.instance.playSfx('audio/sfx_hop.mp3');
     
     // Create a mock token to calculate target offset
     final tempToken = Token(id: widget.token.id, ownerId: widget.token.ownerId, position: nextPos);
@@ -120,6 +127,8 @@ class _TokenAnimatorState extends State<TokenAnimator> with TickerProviderStateM
     });
     
     await _captureController.forward();
+    // ignore: unawaited_futures
+    AudioManager.instance.playSfx('audio/sfx_capture.mp3');
     
     setState(() {
       _currentOffset = BoardGeometry.getTokenPosition(widget.token, widget.color, widget.tokenIndex);
