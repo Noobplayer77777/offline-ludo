@@ -13,6 +13,7 @@ abstract class Player with _$Player {
     required PlayerColor color,
     @Default(false) bool isBot,
     @Default(false) bool hasFinished,
+    @Default(false) bool isReady,
     @Default(0) int rank,
   }) = _Player;
 

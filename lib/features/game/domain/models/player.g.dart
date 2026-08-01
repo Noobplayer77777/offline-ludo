@@ -12,6 +12,7 @@ _Player _$PlayerFromJson(Map<String, dynamic> json) => _Player(
   color: $enumDecode(_$PlayerColorEnumMap, json['color']),
   isBot: json['isBot'] as bool? ?? false,
   hasFinished: json['hasFinished'] as bool? ?? false,
+  isReady: json['isReady'] as bool? ?? false,
   rank: (json['rank'] as num?)?.toInt() ?? 0,
 );
 
@@ -21,6 +22,7 @@ Map<String, dynamic> _$PlayerToJson(_Player instance) => <String, dynamic>{
   'color': _$PlayerColorEnumMap[instance.color]!,
   'isBot': instance.isBot,
   'hasFinished': instance.hasFinished,
+  'isReady': instance.isReady,
   'rank': instance.rank,
 };
 

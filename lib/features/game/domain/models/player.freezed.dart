@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Player {
 
- String get id; String get name; PlayerColor get color; bool get isBot; bool get hasFinished; int get rank;
+ String get id; String get name; PlayerColor get color; bool get isBot; bool get hasFinished; bool get isReady; int get rank;
 /// Create a copy of Player
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PlayerCopyWith<Player> get copyWith => _$PlayerCopyWithImpl<Player>(this as Pla
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.hasFinished, hasFinished) || other.hasFinished == hasFinished)&&(identical(other.rank, rank) || other.rank == rank));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.hasFinished, hasFinished) || other.hasFinished == hasFinished)&&(identical(other.isReady, isReady) || other.isReady == isReady)&&(identical(other.rank, rank) || other.rank == rank));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,color,isBot,hasFinished,rank);
+int get hashCode => Object.hash(runtimeType,id,name,color,isBot,hasFinished,isReady,rank);
 
 @override
 String toString() {
-  return 'Player(id: $id, name: $name, color: $color, isBot: $isBot, hasFinished: $hasFinished, rank: $rank)';
+  return 'Player(id: $id, name: $name, color: $color, isBot: $isBot, hasFinished: $hasFinished, isReady: $isReady, rank: $rank)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PlayerCopyWith<$Res>  {
   factory $PlayerCopyWith(Player value, $Res Function(Player) _then) = _$PlayerCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, PlayerColor color, bool isBot, bool hasFinished, int rank
+ String id, String name, PlayerColor color, bool isBot, bool hasFinished, bool isReady, int rank
 });
 
 
@@ -65,13 +65,14 @@ class _$PlayerCopyWithImpl<$Res>
 
 /// Create a copy of Player
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? color = null,Object? isBot = null,Object? hasFinished = null,Object? rank = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? color = null,Object? isBot = null,Object? hasFinished = null,Object? isReady = null,Object? rank = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as PlayerColor,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,hasFinished: null == hasFinished ? _self.hasFinished : hasFinished // ignore: cast_nullable_to_non_nullable
+as bool,isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  PlayerColor color,  bool isBot,  bool hasFinished,  int rank)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  PlayerColor color,  bool isBot,  bool hasFinished,  bool isReady,  int rank)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Player() when $default != null:
-return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_that.rank);case _:
+return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_that.isReady,_that.rank);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  PlayerColor color,  bool isBot,  bool hasFinished,  int rank)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  PlayerColor color,  bool isBot,  bool hasFinished,  bool isReady,  int rank)  $default,) {final _that = this;
 switch (_that) {
 case _Player():
-return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_that.rank);case _:
+return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_that.isReady,_that.rank);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  PlayerColor color,  bool isBot,  bool hasFinished,  int rank)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  PlayerColor color,  bool isBot,  bool hasFinished,  bool isReady,  int rank)?  $default,) {final _that = this;
 switch (_that) {
 case _Player() when $default != null:
-return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_that.rank);case _:
+return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_that.isReady,_that.rank);case _:
   return null;
 
 }
@@ -214,7 +215,7 @@ return $default(_that.id,_that.name,_that.color,_that.isBot,_that.hasFinished,_t
 @JsonSerializable()
 
 class _Player implements Player {
-  const _Player({required this.id, required this.name, required this.color, this.isBot = false, this.hasFinished = false, this.rank = 0});
+  const _Player({required this.id, required this.name, required this.color, this.isBot = false, this.hasFinished = false, this.isReady = false, this.rank = 0});
   factory _Player.fromJson(Map<String, dynamic> json) => _$PlayerFromJson(json);
 
 @override final  String id;
@@ -222,6 +223,7 @@ class _Player implements Player {
 @override final  PlayerColor color;
 @override@JsonKey() final  bool isBot;
 @override@JsonKey() final  bool hasFinished;
+@override@JsonKey() final  bool isReady;
 @override@JsonKey() final  int rank;
 
 /// Create a copy of Player
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.hasFinished, hasFinished) || other.hasFinished == hasFinished)&&(identical(other.rank, rank) || other.rank == rank));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Player&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.hasFinished, hasFinished) || other.hasFinished == hasFinished)&&(identical(other.isReady, isReady) || other.isReady == isReady)&&(identical(other.rank, rank) || other.rank == rank));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,color,isBot,hasFinished,rank);
+int get hashCode => Object.hash(runtimeType,id,name,color,isBot,hasFinished,isReady,rank);
 
 @override
 String toString() {
-  return 'Player(id: $id, name: $name, color: $color, isBot: $isBot, hasFinished: $hasFinished, rank: $rank)';
+  return 'Player(id: $id, name: $name, color: $color, isBot: $isBot, hasFinished: $hasFinished, isReady: $isReady, rank: $rank)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$PlayerCopyWith<$Res> implements $PlayerCopyWith<$Res> {
   factory _$PlayerCopyWith(_Player value, $Res Function(_Player) _then) = __$PlayerCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, PlayerColor color, bool isBot, bool hasFinished, int rank
+ String id, String name, PlayerColor color, bool isBot, bool hasFinished, bool isReady, int rank
 });
 
 
@@ -274,13 +276,14 @@ class __$PlayerCopyWithImpl<$Res>
 
 /// Create a copy of Player
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? color = null,Object? isBot = null,Object? hasFinished = null,Object? rank = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? color = null,Object? isBot = null,Object? hasFinished = null,Object? isReady = null,Object? rank = null,}) {
   return _then(_Player(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as PlayerColor,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,hasFinished: null == hasFinished ? _self.hasFinished : hasFinished // ignore: cast_nullable_to_non_nullable
+as bool,isReady: null == isReady ? _self.isReady : isReady // ignore: cast_nullable_to_non_nullable
 as bool,rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
 as int,
   ));

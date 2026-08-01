@@ -5,7 +5,6 @@ import 'core/constants/app_constants.dart';
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/error_handler.dart';
-import 'package:offline_ludo/features/game/presentation/board/ludo_board_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,18 +17,7 @@ void main() {
   );
 }
 
-class LobbyScreen extends StatelessWidget {
-  const LobbyScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Anti Gravity Ludo - Dev')),
-      body: const LudoBoardWidget(),
-    );
-  }
-}
-
+// removed placeholder LobbyScreen
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
