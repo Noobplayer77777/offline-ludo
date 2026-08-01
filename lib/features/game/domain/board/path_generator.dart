@@ -33,31 +33,29 @@ class PathGenerator {
 
   static const Map<PlayerColor, List<Offset>> finishLanes = {
     PlayerColor.green: [
-      Offset(7, 1), Offset(7, 2), Offset(7, 3), Offset(7, 4), Offset(7, 5),
+      Offset(1, 7), Offset(2, 7), Offset(3, 7), Offset(4, 7), Offset(5, 7),
     ],
     PlayerColor.yellow: [
-      Offset(13, 7), Offset(12, 7), Offset(11, 7), Offset(10, 7), Offset(9, 7),
+      Offset(7, 1), Offset(7, 2), Offset(7, 3), Offset(7, 4), Offset(7, 5),
     ],
     PlayerColor.blue: [
-      Offset(7, 13), Offset(7, 12), Offset(7, 11), Offset(7, 10), Offset(7, 9),
+      Offset(13, 7), Offset(12, 7), Offset(11, 7), Offset(10, 7), Offset(9, 7),
     ],
     PlayerColor.red: [
-      Offset(1, 7), Offset(2, 7), Offset(3, 7), Offset(4, 7), Offset(5, 7),
+      Offset(7, 13), Offset(7, 12), Offset(7, 11), Offset(7, 10), Offset(7, 9),
     ],
   };
 
   static const Map<PlayerColor, int> startIndices = {
-    PlayerColor.green: 10,
-    PlayerColor.yellow: 23,
-    PlayerColor.blue: 36,
-    PlayerColor.red: 49,
+    PlayerColor.green: 0,
+    PlayerColor.yellow: 13,
+    PlayerColor.blue: 26,
+    PlayerColor.red: 39,
   };
 
   /// Returns true if the cell at the given index in `mainTrack` is a safe zone (star).
   static bool isSafeZone(int trackIndex) {
-    // 0 is top-left cell of left arm. Let's see if our safe zones match.
-    // Safe zones: Start cells (10, 23, 36, 49) + 8 = (18, 31, 44, 5).
-    const List<int> safeIndices = [5, 10, 18, 23, 31, 36, 44, 49];
+    const List<int> safeIndices = [0, 8, 13, 21, 26, 34, 39, 47];
     return safeIndices.contains(trackIndex);
   }
 
