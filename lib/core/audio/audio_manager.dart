@@ -9,7 +9,7 @@ class AudioManager {
 
   AudioSettings _settings = const AudioSettings();
   final Logger _logger = Logger();
-
+  
   void updateSettings(AudioSettings settings) {
     _settings = settings;
     _logger.i('AudioSettings updated: BGM ${_settings.bgmVolume}, SFX ${_settings.sfxVolume}, Muted ${_settings.isMuted}');
