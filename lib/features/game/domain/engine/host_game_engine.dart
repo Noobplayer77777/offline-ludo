@@ -23,7 +23,7 @@ class HostGameEngine {
   StreamSubscription<Packet>? _packetSub;
 
   GameState? _gameState;
-  Map<String, Player> _lobbyPlayers = {}; // Track lobby players until game starts
+  final Map<String, Player> _lobbyPlayers = {}; // Track lobby players until game starts
 
   HostGameEngine(this._server) {
     _packetSub = _server?.incomingPackets.listen(_handlePacket);
@@ -56,6 +56,13 @@ class HostGameEngine {
         final player = _lobbyPlayers[packet.clientId];
         if (player != null) {
           _lobbyPlayers[packet.clientId] = player.copyWith(isReady: p.isReady);
+          _broadcastLobbySnapshot();
+        }
+      },
+      kickPlayer: (p) {
+        if (packet.clientId.startsWith('host_')) {
+          _lobbyPlayers.remove(p.targetClientId);
+          _server?.disconnectClient(p.targetClientId);
           _broadcastLobbySnapshot();
         }
       },

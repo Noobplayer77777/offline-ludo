@@ -11,6 +11,7 @@ sealed class PacketPayload with _$PacketPayload {
   const factory PacketPayload.playerLeft({required String clientId, required String reason}) = _PlayerLeftPayload;
   const factory PacketPayload.reconnect({required String sessionToken}) = _ReconnectPayload;
   const factory PacketPayload.ready({required bool isReady}) = _ReadyPayload;
+  const factory PacketPayload.kickPlayer({required String targetClientId, required String reason}) = _KickPlayerPayload;
   
   // Game Lifecycle
   const factory PacketPayload.startGame({required String firstTurnClientId}) = _StartGamePayload;

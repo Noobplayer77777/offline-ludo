@@ -61,9 +61,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final isMyTurn = gameState.activePlayerId == myPlayerId;
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey.shade900,
-      body: SafeArea(
-        child: Column(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/board_bg.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -71,9 +77,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Connection Indicator
-                  LoopingFade(
-                    duration: const Duration(seconds: 1),
-                    child: const Icon(
+                  const LoopingFade(
+                    duration: Duration(seconds: 1),
+                    child: Icon(
                       Icons.wifi,
                       color: Colors.green,
                     ),
@@ -112,6 +118,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.settings, color: Colors.white),
+                    tooltip: 'Settings',
                     onPressed: () {
                       AudioManager.instance.playSfx('audio/sfx_click.mp3');
                       showDialog(
@@ -217,6 +224,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -5,6 +5,8 @@ abstract class LobbyService {
   /// Join an existing room via a code
   Future<void> joinRoom(String roomCode, String playerName);
 
+  Future<void> kickPlayer(String targetClientId);
+
   /// Toggle ready status for the current player
   Future<void> toggleReady();
 

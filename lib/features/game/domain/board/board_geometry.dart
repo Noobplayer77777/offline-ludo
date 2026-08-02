@@ -50,11 +50,11 @@ class BoardGeometry {
           gridX = 0; gridY = 9; break;
       }
       
-      final double centerOffset = homeSize / 2;
-      final double distance = 1.2;
+      const double centerOffset = homeSize / 2;
+      const double distance = 1.2;
       
-      double ox = gridX + centerOffset;
-      double oy = gridY + centerOffset;
+      final double ox = gridX + centerOffset;
+      final double oy = gridY + centerOffset;
       
       switch (tokenIndex) {
         case 0: return Offset(ox - distance, oy - distance);
@@ -62,17 +62,15 @@ class BoardGeometry {
         case 2: return Offset(ox - distance, oy + distance);
         case 3: return Offset(ox + distance, oy + distance);
       }
-    } else if (token.position >= 0 && token.position <= 50) {
-      // Main track
-      int trackIndex = (PathGenerator.startIndices[color]! + token.position) % 52;
-      return PathGenerator.mainTrack[trackIndex];
-    } else if (token.position >= 51 && token.position <= 56) {
-      // Finish lane
-      int finishLaneIndex = token.position - 51;
-      return PathGenerator.finishLanes[color]![finishLaneIndex];
-    } else if (token.position == 57) {
-      // Finished
-      return const Offset(7.5, 7.5);
+    } else if (token.position >= 0) {
+      final pos = PathGenerator.getGridPosition(color, token.position);
+      if (pos != null) {
+        if (token.position == 57) {
+          // Adjust center to be slightly centered for tokens
+          return const Offset(7.5, 7.5);
+        }
+        return pos;
+      }
     }
     return const Offset(0, 0);
   }

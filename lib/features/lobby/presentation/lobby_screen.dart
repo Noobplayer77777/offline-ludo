@@ -16,7 +16,7 @@ class LobbyScreen extends ConsumerStatefulWidget {
 
 class _LobbyScreenState extends ConsumerState<LobbyScreen> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-  List<Player> _currentPlayers = [];
+  final List<Player> _currentPlayers = [];
 
   @override
   void initState() {
@@ -81,36 +81,54 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> {
       sizeFactor: animation,
       child: FadeTransition(
         opacity: animation,
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: _getColorForPlayer(player.color),
-            child: Icon(
-              isPlayerHost ? Icons.star : Icons.person,
-              color: Colors.white,
-            ),
-          ),
-          title: Text(
-            player.name + (isMe ? ' (You)' : ''),
-            style: TextStyle(
-              fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-          trailing: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: player.isReady ? Colors.green : Colors.orange,
+        child: Semantics(
+          label: '${player.name}, ${isPlayerHost ? "Host" : "Player"}, Status: ${player.isReady ? "Ready" : "Not Ready"}',
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: _getColorForPlayer(player.color),
+              child: Icon(
+                isPlayerHost ? Icons.star : Icons.person,
+                color: Colors.white,
+                semanticLabel: isPlayerHost ? 'Host Icon' : 'Player Icon',
               ),
             ),
-            child: Text(
-              player.isReady ? 'READY' : 'WAITING',
+            title: Text(
+              player.name + (isMe ? ' (You)' : ''),
               style: TextStyle(
-                color: player.isReady ? Colors.green : Colors.orange,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
+                fontWeight: isMe ? FontWeight.bold : FontWeight.normal,
               ),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!isMe && _currentPlayers.isNotEmpty && _currentPlayers.first.id == myId)
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle, color: Colors.red),
+                    tooltip: 'Kick Player',
+                    onPressed: () {
+                      AudioManager.instance.playSfx('audio/sfx_click.mp3');
+                      ref.read(lobbyServiceProvider).kickPlayer(player.id);
+                    },
+                  ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: player.isReady ? Colors.green.withValues(alpha: 0.2) : Colors.orange.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: player.isReady ? Colors.green : Colors.orange,
+                    ),
+                  ),
+                  child: Text(
+                    player.isReady ? 'READY' : 'WAITING',
+                    style: TextStyle(
+                      color: player.isReady ? Colors.green : Colors.orange,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

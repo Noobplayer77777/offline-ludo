@@ -75,6 +75,20 @@ Map<String, dynamic> _$ReadyPayloadToJson(_ReadyPayload instance) =>
       'runtimeType': instance.$type,
     };
 
+_KickPlayerPayload _$KickPlayerPayloadFromJson(Map<String, dynamic> json) =>
+    _KickPlayerPayload(
+      targetClientId: json['targetClientId'] as String,
+      reason: json['reason'] as String,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$KickPlayerPayloadToJson(_KickPlayerPayload instance) =>
+    <String, dynamic>{
+      'targetClientId': instance.targetClientId,
+      'reason': instance.reason,
+      'runtimeType': instance.$type,
+    };
+
 _StartGamePayload _$StartGamePayloadFromJson(Map<String, dynamic> json) =>
     _StartGamePayload(
       firstTurnClientId: json['firstTurnClientId'] as String,
