@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
+import 'package:offline_ludo/core/theme/app_colors.dart';
+import 'package:offline_ludo/core/ui/cyber_button.dart';
+import 'package:offline_ludo/core/ui/cyber_text_field.dart';
+import 'dart:math' as math;
 
 class MainMenuScreen extends ConsumerStatefulWidget {
   const MainMenuScreen({super.key});
@@ -10,20 +14,28 @@ class MainMenuScreen extends ConsumerStatefulWidget {
   ConsumerState<MainMenuScreen> createState() => _MainMenuScreenState();
 }
 
-class _MainMenuScreenState extends ConsumerState<MainMenuScreen> {
+class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTickerProviderStateMixin {
   final _nameController = TextEditingController();
   bool _isLoading = false;
+  late AnimationController _bgController;
+
+  @override
+  void initState() {
+    super.initState();
+    _bgController = AnimationController(vsync: this, duration: const Duration(seconds: 10))..repeat();
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _bgController.dispose();
     super.dispose();
   }
 
   Future<void> _createRoom() async {
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your name')),
+        const SnackBar(content: Text('INITIATE PROTOCOL: PLEASE ENTER YOUR DESIGNATION (NAME)')),
       );
       return;
     }
@@ -38,7 +50,7 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create room: $e')),
+          SnackBar(content: Text('HOST PROTOCOL FAILED: $e')),
         );
       }
     } finally {
@@ -49,13 +61,14 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> {
   void _showJoinDialog() {
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your name first')),
+        const SnackBar(content: Text('INITIATE PROTOCOL: PLEASE ENTER YOUR DESIGNATION (NAME)')),
       );
       return;
     }
 
     showDialog<void>(
       context: context,
+      barrierColor: Colors.black87,
       builder: (context) => _JoinRoomDialog(playerName: _nameController.text.trim()),
     );
   }
@@ -63,54 +76,100 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Icon(Icons.casino, size: 80, color: Colors.blueAccent),
-              const SizedBox(height: 24),
-              const Text(
-                'Anti Gravity Ludo',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 48),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Your Name',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator())
-              else ...[
-                ElevatedButton.icon(
-                  onPressed: _createRoom,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Create Room (Host)'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+      backgroundColor: AppColors.background,
+      body: Stack(
+        children: [
+          // Animated Cosmic Background
+          AnimatedBuilder(
+            animation: _bgController,
+            builder: (context, child) {
+              return Container(
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.topLeft,
+                    radius: 2.0 + math.sin(_bgController.value * 2 * math.pi) * 0.1,
+                    colors: [
+                      AppColors.surfaceHighlight,
+                      AppColors.background,
+                    ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                OutlinedButton.icon(
-                  onPressed: _showJoinDialog,
-                  icon: const Icon(Icons.login),
-                  label: const Text('Join Room (Client)'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ],
-            ],
+              );
+            },
           ),
-        ),
+          
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Glowing Logo
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withOpacity(0.5),
+                          blurRadius: 40,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.casino_outlined,
+                      size: 96,
+                      color: AppColors.primary,
+                      shadows: [Shadow(color: AppColors.primary, blurRadius: 20)],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Title
+                  Text(
+                    'ANTI GRAVITY\nLUDO',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      color: Colors.white,
+                      height: 1.1,
+                      shadows: [
+                        Shadow(color: AppColors.secondary.withOpacity(0.8), blurRadius: 20, offset: const Offset(0, 4)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 64),
+                  
+                  // Input Field
+                  CyberTextField(
+                    controller: _nameController,
+                    labelText: 'OPERATIVE DESIGNATION',
+                    prefixIcon: Icons.person_outline,
+                    isUppercase: true,
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Action Buttons
+                  CyberButton(
+                    onPressed: _createRoom,
+                    label: 'INITIALIZE HOST',
+                    icon: Icons.rocket_launch,
+                    isPrimary: true,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  CyberButton(
+                    onPressed: _showJoinDialog,
+                    label: 'CONNECT TO HOST',
+                    icon: Icons.satellite_alt,
+                    isPrimary: false,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -149,7 +208,7 @@ class _JoinRoomDialogState extends ConsumerState<_JoinRoomDialog> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to join: $e')),
+          SnackBar(content: Text('CONNECTION FAILED: $e')),
         );
       }
     } finally {
@@ -159,28 +218,57 @@ class _JoinRoomDialogState extends ConsumerState<_JoinRoomDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Join Room'),
-      content: TextField(
-        controller: _codeController,
-        decoration: const InputDecoration(
-          labelText: 'Room Code',
-          border: OutlineInputBorder(),
-        ),
-        textCapitalization: TextCapitalization.characters,
+    return Dialog(
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: AppColors.secondary.withOpacity(0.5), width: 2),
       ),
-      actions: [
-        TextButton(
-          onPressed: _isLoading ? null : () => context.pop(),
-          child: const Text('Cancel'),
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(color: AppColors.secondary.withOpacity(0.1), blurRadius: 40, spreadRadius: 10),
+          ],
         ),
-        ElevatedButton(
-          onPressed: _isLoading ? null : _join,
-          child: _isLoading 
-            ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
-            : const Text('Join'),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'UPLINK ESTABLISHMENT',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.secondary, letterSpacing: 2.0),
+            ),
+            const SizedBox(height: 24),
+            CyberTextField(
+              controller: _codeController,
+              labelText: 'ENTER HOST COORDINATES (IP)',
+              isUppercase: true,
+              prefixIcon: Icons.radar,
+            ),
+            const SizedBox(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: _isLoading ? null : () => context.pop(),
+                  child: Text('ABORT', style: TextStyle(color: AppColors.onSurfaceVariant, letterSpacing: 1.5)),
+                ),
+                const SizedBox(width: 16),
+                CyberButton(
+                  onPressed: _join,
+                  label: 'UPLINK',
+                  icon: Icons.cell_tower,
+                  isPrimary: false,
+                  isLoading: _isLoading,
+                ),
+              ],
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
