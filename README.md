@@ -71,5 +71,3 @@ The game utilizes a decentralized, authoritative-server model entirely on the lo
    flutter build apk --release
    ```
 
-## Acknowledgements
-- Built as part of an AI-assisted advanced agentic coding project using Google DeepMind's Antigravity platform.
