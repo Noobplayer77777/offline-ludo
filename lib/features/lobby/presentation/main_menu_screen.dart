@@ -5,6 +5,7 @@ import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provide
 import 'package:offline_ludo/core/theme/app_colors.dart';
 import 'package:offline_ludo/core/ui/cyber_button.dart';
 import 'package:offline_ludo/core/ui/cyber_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
 class MainMenuScreen extends ConsumerStatefulWidget {
@@ -18,11 +19,48 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
   final _nameController = TextEditingController();
   bool _isLoading = false;
   late AnimationController _bgController;
+  
+  bool _hasSavedSession = false;
+  String? _savedRoomCode;
 
   @override
   void initState() {
     super.initState();
     _bgController = AnimationController(vsync: this, duration: const Duration(seconds: 10))..repeat();
+    _checkSavedSession();
+  }
+
+  Future<void> _checkSavedSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    final clientId = prefs.getString('saved_client_id');
+    final roomCode = prefs.getString('saved_room_code');
+    if (clientId != null && roomCode != null) {
+      if (mounted) {
+        setState(() {
+          _hasSavedSession = true;
+          _savedRoomCode = roomCode;
+        });
+      }
+    }
+  }
+
+  Future<void> _reconnect() async {
+    setState(() => _isLoading = true);
+    try {
+      final service = ref.read(lobbyServiceProvider);
+      await service.reconnectToRoom();
+      if (mounted) {
+        await context.push('/lobby');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('RECONNECT FAILED: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -151,11 +189,21 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
                   const SizedBox(height: 32),
                   
                   // Action Buttons
+                  if (_hasSavedSession) ...[
+                    CyberButton(
+                      onPressed: _reconnect,
+                      label: 'RECONNECT TO [$_savedRoomCode]',
+                      icon: Icons.wifi_protected_setup,
+                      isPrimary: false,
+                      isLoading: _isLoading,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   CyberButton(
                     onPressed: _createRoom,
                     label: 'INITIALIZE HOST',
                     icon: Icons.rocket_launch,
-                    isPrimary: true,
+                    isPrimary: !_hasSavedSession, // Demote if there's a saved session
                     isLoading: _isLoading,
                   ),
                   const SizedBox(height: 16),

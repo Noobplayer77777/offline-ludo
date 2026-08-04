@@ -44,13 +44,27 @@ class HostGameEngine {
   void _handlePacket(Packet packet) {
     packet.payload.mapOrNull(
       joinRoom: (p) {
-        _lobbyPlayers[packet.clientId] = Player(
-          id: packet.clientId,
-          name: p.username,
-          color: _assignColor(),
-          isReady: _lobbyPlayers.isEmpty, // First player is host, automatically ready
-        );
-        _broadcastLobbySnapshot();
+        if (_gameState != null) {
+          // Game already in progress
+          if (_gameState!.players.any((player) => player.id == packet.clientId)) {
+            // Player is reconnecting
+            _server?.sendTo(packet.clientId, PacketPayload.gameStateSnapshot(state: {
+              'type': 'game',
+              'gameState': _gameState!.toJson(),
+            }));
+          } else {
+            // New player trying to join active game
+            _server?.sendTo(packet.clientId, const PacketPayload.error(message: 'Game already in progress'));
+          }
+        } else {
+          _lobbyPlayers[packet.clientId] = Player(
+            id: packet.clientId,
+            name: p.username,
+            color: _assignColor(),
+            isReady: _lobbyPlayers.isEmpty, // First player is host, automatically ready
+          );
+          _broadcastLobbySnapshot();
+        }
       },
       ready: (p) {
         final player = _lobbyPlayers[packet.clientId];

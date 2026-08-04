@@ -4,7 +4,11 @@ import 'package:offline_ludo/features/game/domain/board/board_geometry.dart';
 import 'package:offline_ludo/features/game/presentation/board/ludo_board_widget.dart';
 import 'package:offline_ludo/features/game/domain/models/token.dart';
 import 'package:offline_ludo/features/game/presentation/providers/game_provider.dart';
+import 'package:offline_ludo/features/lobby/domain/services/lobby_service.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
+import 'package:offline_ludo/features/lobby/domain/services/network_lobby_service.dart';
+import 'package:offline_ludo/features/network/domain/client_network_manager.dart';
+import 'package:go_router/go_router.dart';
 import 'package:offline_ludo/core/animations/dice_animator.dart';
 import 'package:offline_ludo/core/animations/token_animator.dart';
 import 'package:offline_ludo/core/animations/looping_animator.dart';
@@ -59,6 +63,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     }
 
     final isMyTurn = gameState.activePlayerId == myPlayerId;
+    final networkState = ref.watch(
+      Provider<NetworkState>((ref) {
+        final client = ref.watch(clientNetworkManagerProvider);
+        return client.state;
+      }),
+    );
+    // Note: actually we need to stream it, but we can't easily inline StreamProvider.
+    // Instead we'll rely on the fact that if a game state update arrives, we're connected.
+    // Let's use a StreamBuilder for networkState inside the build method.
 
     return Scaffold(
       body: Container(
@@ -214,14 +227,68 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             ),
             if (gameState.winnerId != null)
               Container(
-                color: Colors.black54,
+                color: Colors.black87,
                 child: Center(
-                  child: Text(
-                    'Winner: ${gameState.players.firstWhere((p) => p.id == gameState.winnerId).name}',
-                    style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Winner: ${gameState.players.firstWhere((p) => p.id == gameState.winnerId).name}',
+                        style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 32),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.exit_to_app),
+                        label: const Text('RETURN TO UPLINK'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () async {
+                          final service = ref.read(lobbyServiceProvider);
+                          await service.leaveRoom();
+                          if (context.mounted) {
+                            context.go('/');
+                          }
+                        },
+                      )
+                    ],
                   ),
                 ),
               ),
+
+            // Connection Lost Overlay
+            StreamBuilder<NetworkState>(
+              stream: ref.read(clientNetworkManagerProvider).stateStream,
+              initialData: ref.read(clientNetworkManagerProvider).state,
+              builder: (context, snapshot) {
+                if (snapshot.data == NetworkState.disconnected && gameState.winnerId == null) {
+                  return Container(
+                    color: Colors.black.withOpacity(0.8),
+                    child: const Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.wifi_off, color: Colors.red, size: 64),
+                          SizedBox(height: 16),
+                          Text(
+                            'CONNECTION LOST',
+                            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 2.0),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Attempting to reconnect...',
+                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ],
         ),
       ),
