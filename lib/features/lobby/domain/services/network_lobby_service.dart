@@ -12,6 +12,7 @@ import 'package:offline_ludo/features/lobby/domain/services/lobby_service.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
 import 'package:offline_ludo/features/network/domain/client_network_manager.dart';
 import 'package:offline_ludo/features/network/domain/host_server_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
 final clientNetworkManagerProvider = Provider<ClientNetworkManager>((ref) {
@@ -79,6 +80,24 @@ class NetworkLobbyService implements LobbyService {
     return '127.0.0.1';
   }
 
+  Future<void> _saveSession(String clientId, String roomCode, String playerName) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('saved_client_id', clientId);
+      await prefs.setString('saved_room_code', roomCode);
+      await prefs.setString('saved_player_name', playerName);
+    } catch (_) {}
+  }
+
+  Future<void> clearSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('saved_client_id');
+      await prefs.remove('saved_room_code');
+      await prefs.remove('saved_player_name');
+    } catch (_) {}
+  }
+
   @override
   Future<void> createRoom(String playerName) async {
     final server = _ref.read(hostServerManagerProvider);
@@ -115,6 +134,8 @@ class NetworkLobbyService implements LobbyService {
     );
     final lobby = Lobby(room: room, players: []);
     _ref.read(lobbyStateProvider.notifier).updateLobby(lobby);
+
+    await _saveSession(playerId, ip, playerName);
   }
 
   @override
@@ -134,6 +155,32 @@ class NetworkLobbyService implements LobbyService {
     client.setClientId(clientId);
 
     client.sendIntent(PacketPayload.joinRoom(username: playerName, version: '1.0'));
+    
+    await _saveSession(clientId, roomCode, playerName);
+  }
+
+  Future<void> reconnectToRoom() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final clientId = prefs.getString('saved_client_id');
+      final roomCode = prefs.getString('saved_room_code');
+      final playerName = prefs.getString('saved_player_name');
+
+      if (clientId == null || roomCode == null || playerName == null) return;
+
+      _ref.read(currentPlayerIdProvider.notifier).setId(clientId);
+
+      final ws = IOWebSocketChannel.connect('ws://$roomCode:5555');
+      final transport = WebSocketTransport(ws);
+
+      final client = _ref.read(clientNetworkManagerProvider);
+      client.attachTransport(transport);
+      client.setClientId(clientId);
+
+      // By sending joinRoom with the old clientId, the host will recognize us 
+      // if the game is already running.
+      client.sendIntent(PacketPayload.joinRoom(username: playerName, version: '1.0'));
+    } catch (_) {}
   }
 
   @override
@@ -165,6 +212,7 @@ class NetworkLobbyService implements LobbyService {
     await server.stop();
 
     _ref.read(lobbyStateProvider.notifier).updateLobby(null);
+    await clearSession();
   }
 
   @override

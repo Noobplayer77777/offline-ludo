@@ -15,4 +15,10 @@ abstract class LobbyService {
 
   /// Start the game (Host only)
   Future<void> startGame();
+
+  /// Reconnect to the last active room if session is saved
+  Future<void> reconnectToRoom();
+
+  /// Clear the saved session
+  Future<void> clearSession();
 }
