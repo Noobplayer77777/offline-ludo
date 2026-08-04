@@ -9,6 +9,9 @@ import 'package:offline_ludo/core/audio/audio_manager.dart';
 import 'package:offline_ludo/features/settings/presentation/settings_dialog.dart';
 import 'package:offline_ludo/core/theme/app_colors.dart';
 import 'package:offline_ludo/core/ui/cyber_button.dart';
+import 'package:offline_ludo/core/ui/neon_container.dart';
+import 'package:offline_ludo/features/lobby/domain/services/network_lobby_service.dart';
+import 'package:offline_ludo/features/network/domain/client_network_manager.dart';
 
 class LobbyScreen extends ConsumerStatefulWidget {
   const LobbyScreen({super.key});
@@ -93,14 +96,14 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
         child: Container(
           margin: const EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
-            color: AppColors.surfaceHighlight.withOpacity(0.3),
+            color: AppColors.surfaceHighlight.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: player.isReady ? AppColors.success : pColor.withOpacity(0.5),
+              color: player.isReady ? AppColors.success : pColor.withValues(alpha: 0.5),
               width: player.isReady ? 2 : 1,
             ),
             boxShadow: player.isReady ? [
-              BoxShadow(color: AppColors.success.withOpacity(0.2), blurRadius: 10, spreadRadius: 1)
+              BoxShadow(color: AppColors.success.withValues(alpha: 0.2), blurRadius: 10, spreadRadius: 1)
             ] : null,
           ),
           child: ListTile(
@@ -113,11 +116,11 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
                   height: 48,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: pColor.withOpacity(0.2),
+                    color: pColor.withValues(alpha: 0.2),
                     border: Border.all(color: pColor, width: 2),
                     boxShadow: [
                       BoxShadow(
-                        color: pColor.withOpacity(0.5 * _pulseController.value),
+                        color: pColor.withValues(alpha: 0.5 * _pulseController.value),
                         blurRadius: 10,
                         spreadRadius: 2,
                       ),
@@ -160,7 +163,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: player.isReady ? AppColors.success.withOpacity(0.2) : AppColors.warning.withOpacity(0.2),
+                    color: player.isReady ? AppColors.success.withValues(alpha: 0.2) : AppColors.warning.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
                       color: player.isReady ? AppColors.success : AppColors.warning,
@@ -197,6 +200,30 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
       }
     });
 
+    ref.listen(networkStateProvider, (previous, next) {
+      if (next.value == NetworkState.disconnected) {
+        if (!mounted) return;
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColors.surface,
+            title: const Text('UPLINK LOST', style: TextStyle(color: Colors.redAccent)),
+            content: const Text('Connection to host was lost.', style: TextStyle(color: Colors.white)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop(); // Close dialog
+                  context.go('/'); // Return to main menu
+                },
+                child: const Text('RETURN TO BASE', style: TextStyle(color: AppColors.primary)),
+              )
+            ],
+          ),
+        );
+      }
+    });
+
     final lobby = ref.watch(lobbyStateProvider);
     final myId = ref.watch(currentPlayerIdProvider);
 
@@ -224,7 +251,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: AppColors.primary,
             letterSpacing: 2.0,
-            shadows: [Shadow(color: AppColors.primary, blurRadius: 10)],
+            shadows: [const Shadow(color: AppColors.primary, blurRadius: 10)],
           ),
         ),
         actions: [
@@ -232,7 +259,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
             icon: const Icon(Icons.settings, color: AppColors.secondary),
             onPressed: () {
               AudioManager.instance.playSfx('audio/sfx_click.mp3');
-              showDialog(
+              showDialog<void>(
                 context: context,
                 builder: (ctx) => const SettingsDialog(),
               );
@@ -255,23 +282,16 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
         child: Column(
           children: [
             // Room Code HUD Display
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24.0),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceHighlight.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.primary.withOpacity(0.5), width: 1),
-                boxShadow: [
-                  BoxShadow(color: AppColors.primary.withOpacity(0.1), blurRadius: 20, spreadRadius: 5),
-                ],
-              ),
-              child: Column(
+            NeonContainer(
+              color: AppColors.primary,
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
                 children: [
                   Text(
                     'UPLINK COORDINATES',
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: AppColors.primary.withOpacity(0.7),
+                      color: AppColors.primary.withValues(alpha: 0.7),
                       letterSpacing: 2.0,
                     ),
                   ),
@@ -279,17 +299,15 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            lobby.room.code,
-                            style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 4,
-                              shadows: [Shadow(color: AppColors.primary, blurRadius: 15)],
-                            ),
+                      Flexible(
+                        child: SelectableText(
+                          lobby.room.code,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                            shadows: [const Shadow(color: AppColors.primary, blurRadius: 10)],
                           ),
                         ),
                       ),
@@ -308,6 +326,7 @@ class _LobbyScreenState extends ConsumerState<LobbyScreen> with TickerProviderSt
                 ],
               ),
             ),
+          ),
             const SizedBox(height: 32),
             
             // Player List

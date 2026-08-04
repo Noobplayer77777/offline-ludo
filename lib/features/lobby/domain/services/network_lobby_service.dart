@@ -21,6 +21,10 @@ final clientNetworkManagerProvider = Provider<ClientNetworkManager>((ref) {
   return manager;
 });
 
+final networkStateProvider = StreamProvider<NetworkState>((ref) {
+  return ref.watch(clientNetworkManagerProvider).stateStream;
+});
+
 final hostServerManagerProvider = Provider<HostServerManager>((ref) {
   final server = HostServerManager();
   ref.onDispose(() => server.stop());
@@ -29,7 +33,7 @@ final hostServerManagerProvider = Provider<HostServerManager>((ref) {
 
 class NetworkLobbyService implements LobbyService {
   final Ref _ref;
-  StreamSubscription? _packetSub;
+  StreamSubscription<Packet>? _packetSub;
 
   NetworkLobbyService(this._ref) {
     // Listen to packets globally to update the lobby
@@ -89,6 +93,7 @@ class NetworkLobbyService implements LobbyService {
     } catch (_) {}
   }
 
+  @override
   Future<void> clearSession() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -159,6 +164,7 @@ class NetworkLobbyService implements LobbyService {
     await _saveSession(clientId, roomCode, playerName);
   }
 
+  @override
   Future<void> reconnectToRoom() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -221,6 +227,17 @@ class NetworkLobbyService implements LobbyService {
     final lobby = _ref.read(lobbyStateProvider);
     if (lobby != null && lobby.players.isNotEmpty) {
       client.sendIntent(PacketPayload.startGame(firstTurnClientId: lobby.players.first.id));
+    }
+  }
+
+  @override
+  Future<void> addBotPlayer(String name) async {
+    // Only the host can add bots directly to the HostGameEngine
+    try {
+      final engine = _ref.read(hostGameEngineProvider);
+      engine.addBotPlayer(name);
+    } catch (_) {
+      // Ignored if not host
     }
   }
 }

@@ -21,4 +21,7 @@ abstract class LobbyService {
 
   /// Clear the saved session
   Future<void> clearSession();
+
+  /// Add a bot player to the current room (Host only)
+  Future<void> addBotPlayer(String name);
 }

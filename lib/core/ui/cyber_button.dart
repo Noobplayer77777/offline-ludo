@@ -71,16 +71,16 @@ class _CyberButtonState extends State<CyberButton> with SingleTickerProviderStat
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 24),
             decoration: BoxDecoration(
-              color: _isHovered ? color.withOpacity(0.15) : color.withOpacity(0.1),
+              color: _isHovered ? color.withValues(alpha: 0.15) : color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: _isHovered ? color : color.withOpacity(0.5),
+                color: _isHovered ? color : color.withValues(alpha: 0.5),
                 width: 2,
               ),
               boxShadow: [
                 if (_isHovered)
                   BoxShadow(
-                    color: color.withOpacity(0.3),
+                    color: color.withValues(alpha: 0.3),
                     blurRadius: 12,
                     spreadRadius: 2,
                   ),

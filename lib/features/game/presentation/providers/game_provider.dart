@@ -9,7 +9,7 @@ final gameStateProvider = NotifierProvider<GameStateNotifier, GameState?>(() {
 });
 
 class GameStateNotifier extends Notifier<GameState?> {
-  StreamSubscription? _packetSub;
+  StreamSubscription<Packet>? _packetSub;
 
   @override
   GameState? build() {
