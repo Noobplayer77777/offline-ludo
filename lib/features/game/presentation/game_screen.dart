@@ -4,7 +4,6 @@ import 'package:offline_ludo/features/game/domain/board/board_geometry.dart';
 import 'package:offline_ludo/features/game/presentation/board/ludo_board_widget.dart';
 import 'package:offline_ludo/features/game/domain/models/token.dart';
 import 'package:offline_ludo/features/game/presentation/providers/game_provider.dart';
-import 'package:offline_ludo/features/lobby/domain/services/lobby_service.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
 import 'package:offline_ludo/features/lobby/domain/services/network_lobby_service.dart';
 import 'package:offline_ludo/features/network/domain/client_network_manager.dart';
@@ -12,6 +11,9 @@ import 'package:go_router/go_router.dart';
 import 'package:offline_ludo/core/animations/dice_animator.dart';
 import 'package:offline_ludo/core/animations/token_animator.dart';
 import 'package:offline_ludo/core/animations/looping_animator.dart';
+import 'package:offline_ludo/core/theme/app_colors.dart';
+import 'package:offline_ludo/core/ui/cyber_button.dart';
+import 'package:offline_ludo/core/ui/neon_container.dart';
 import 'package:offline_ludo/core/audio/audio_manager.dart';
 import 'package:offline_ludo/features/settings/presentation/settings_dialog.dart';
 import 'package:confetti/confetti.dart';
@@ -63,12 +65,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     }
 
     final isMyTurn = gameState.activePlayerId == myPlayerId;
-    final networkState = ref.watch(
-      Provider<NetworkState>((ref) {
-        final client = ref.watch(clientNetworkManagerProvider);
-        return client.state;
-      }),
-    );
+
     // Note: actually we need to stream it, but we can't easily inline StreamProvider.
     // Instead we'll rely on the fact that if a game state update arrives, we're connected.
     // Let's use a StreamBuilder for networkState inside the build method.
@@ -102,29 +99,21 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     minScale: 1.0,
                     maxScale: 1.1,
                     duration: const Duration(milliseconds: 800),
-                    child: Container(
+                    child: NeonContainer(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: BoardGeometry.getColorForPlayer(
-                          gameState.players.firstWhere((p) => p.id == gameState.activePlayerId).color,
-                        ).withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: BoardGeometry.getColorForPlayer(
-                              gameState.players.firstWhere((p) => p.id == gameState.activePlayerId).color,
-                            ),
-                            blurRadius: 10,
-                            spreadRadius: 2,
-                          )
-                        ],
+                      color: BoardGeometry.getColorForPlayer(
+                        gameState.players.firstWhere((p) => p.id == gameState.activePlayerId).color,
                       ),
+                      isGlowing: true,
+                      blurRadius: 10,
+                      spreadRadius: 2,
                       child: Text(
-                        'Turn: ${gameState.players.firstWhere((p) => p.id == gameState.activePlayerId).name}',
+                        'TURN: ${gameState.players.firstWhere((p) => p.id == gameState.activePlayerId).name.toUpperCase()}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
                         ),
                       ),
                     ),
@@ -134,7 +123,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     tooltip: 'Settings',
                     onPressed: () {
                       AudioManager.instance.playSfx('audio/sfx_click.mp3');
-                      showDialog(
+                      showDialog<void>(
                         context: context,
                         builder: (ctx) => const SettingsDialog(),
                       );
@@ -202,15 +191,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     hasRolled: gameState.hasRolledDice,
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
+                  CyberButton(
                     onPressed: isMyTurn && !gameState.hasRolledDice ? () {
                       ref.read(gameStateProvider.notifier).rollDice();
-                    } : null,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                      backgroundColor: isMyTurn ? Colors.green : Colors.grey,
-                    ),
-                    child: const Text('ROLL DICE', style: TextStyle(fontSize: 20)),
+                    } : () {},
+                    label: 'ROLL DICE',
+                    icon: Icons.casino,
+                    isPrimary: isMyTurn && !gameState.hasRolledDice,
                   ),
                 ],
               ),
@@ -237,14 +224,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                         style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 32),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.exit_to_app),
-                        label: const Text('RETURN TO UPLINK'),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                        ),
+                      CyberButton(
+                        icon: Icons.exit_to_app,
+                        label: 'RETURN TO UPLINK',
+                        isPrimary: false,
                         onPressed: () async {
                           final service = ref.read(lobbyServiceProvider);
                           await service.leaveRoom();
@@ -265,21 +248,31 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               builder: (context, snapshot) {
                 if (snapshot.data == NetworkState.disconnected && gameState.winnerId == null) {
                   return Container(
-                    color: Colors.black.withOpacity(0.8),
-                    child: const Center(
+                    color: Colors.black.withValues(alpha: 0.8),
+                    child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.wifi_off, color: Colors.red, size: 64),
-                          SizedBox(height: 16),
-                          Text(
+                          const Icon(Icons.wifi_off, color: Colors.red, size: 64),
+                          const SizedBox(height: 16),
+                          const Text(
                             'CONNECTION LOST',
                             style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 2.0),
                           ),
-                          SizedBox(height: 8),
-                          Text(
+                          const SizedBox(height: 8),
+                          const Text(
                             'Attempting to reconnect...',
                             style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                          const SizedBox(height: 32),
+                          CyberButton(
+                            onPressed: () {
+                              ref.read(lobbyServiceProvider).leaveRoom();
+                              context.go('/');
+                            },
+                            label: 'RETURN TO BASE',
+                            icon: Icons.exit_to_app,
+                            isPrimary: false,
                           ),
                         ],
                       ),

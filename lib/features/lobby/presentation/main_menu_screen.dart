@@ -96,6 +96,40 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
     }
   }
 
+  Future<void> _startSoloGame() async {
+    if (_nameController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('INITIATE PROTOCOL: PLEASE ENTER YOUR DESIGNATION (NAME)')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    try {
+      final service = ref.read(lobbyServiceProvider);
+      await service.createRoom(_nameController.text.trim());
+      
+      // Give the socket a tiny bit of time to connect and create the room
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      
+      await service.addBotPlayer('Alpha-Bot');
+      await service.addBotPlayer('Beta-Bot');
+      await service.addBotPlayer('Gamma-Bot');
+      
+      if (mounted) {
+        await context.push('/lobby');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('SOLO PROTOCOL FAILED: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   void _showJoinDialog() {
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -126,10 +160,35 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
                   gradient: RadialGradient(
                     center: Alignment.topLeft,
                     radius: 2.0 + math.sin(_bgController.value * 2 * math.pi) * 0.1,
-                    colors: [
+                    colors: const [
                       AppColors.surfaceHighlight,
                       AppColors.background,
                     ],
+                  ),
+                ),
+              );
+            },
+          ),
+          
+          // Moving Rocket
+          AnimatedBuilder(
+            animation: _bgController,
+            builder: (context, child) {
+              final size = MediaQuery.of(context).size;
+              // Progress goes from 0.0 to 1.0. Move from bottom-left to top-right.
+              final progress = _bgController.value;
+              final x = -100 + (size.width + 200) * progress;
+              final y = size.height + 100 - (size.height + 200) * progress;
+              
+              return Positioned(
+                left: x,
+                top: y,
+                child: Transform.rotate(
+                  angle: math.pi / 4, // Pointing roughly top-right
+                  child: Icon(
+                    Icons.rocket_launch,
+                    size: 80,
+                    color: AppColors.secondary.withValues(alpha: 0.2), // Faint neon rocket in the background
                   ),
                 ),
               );
@@ -150,13 +209,13 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.5),
+                          color: AppColors.primary.withValues(alpha: 0.5),
                           blurRadius: 40,
                           spreadRadius: 5,
                         ),
                       ],
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.casino_outlined,
                       size: 96,
                       color: AppColors.primary,
@@ -167,13 +226,13 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
                   
                   // Title
                   Text(
-                    'ANTI GRAVITY\nLUDO',
+                    'ASTRO\nLUDO',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
                       color: Colors.white,
                       height: 1.1,
                       shadows: [
-                        Shadow(color: AppColors.secondary.withOpacity(0.8), blurRadius: 20, offset: const Offset(0, 4)),
+                        Shadow(color: AppColors.secondary.withValues(alpha: 0.8), blurRadius: 20, offset: const Offset(0, 4)),
                       ],
                     ),
                   ),
@@ -204,6 +263,14 @@ class _MainMenuScreenState extends ConsumerState<MainMenuScreen> with SingleTick
                     label: 'INITIALIZE HOST',
                     icon: Icons.rocket_launch,
                     isPrimary: !_hasSavedSession, // Demote if there's a saved session
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  CyberButton(
+                    onPressed: _startSoloGame,
+                    label: 'PLAY SOLO (WITH BOTS)',
+                    icon: Icons.smart_toy,
+                    isPrimary: false,
                     isLoading: _isLoading,
                   ),
                   const SizedBox(height: 16),
@@ -270,14 +337,14 @@ class _JoinRoomDialogState extends ConsumerState<_JoinRoomDialog> {
       backgroundColor: AppColors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: AppColors.secondary.withOpacity(0.5), width: 2),
+        side: BorderSide(color: AppColors.secondary.withValues(alpha: 0.5), width: 2),
       ),
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
-            BoxShadow(color: AppColors.secondary.withOpacity(0.1), blurRadius: 40, spreadRadius: 10),
+            BoxShadow(color: AppColors.secondary.withValues(alpha: 0.1), blurRadius: 40, spreadRadius: 10),
           ],
         ),
         child: Column(
@@ -302,7 +369,7 @@ class _JoinRoomDialogState extends ConsumerState<_JoinRoomDialog> {
               children: [
                 TextButton(
                   onPressed: _isLoading ? null : () => context.pop(),
-                  child: Text('ABORT', style: TextStyle(color: AppColors.onSurfaceVariant, letterSpacing: 1.5)),
+                  child: const Text('ABORT', style: TextStyle(color: AppColors.onSurfaceVariant, letterSpacing: 1.5)),
                 ),
                 const SizedBox(width: 16),
                 CyberButton(

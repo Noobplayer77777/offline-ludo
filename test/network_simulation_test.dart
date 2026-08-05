@@ -23,7 +23,7 @@ class SimulatedTransport {
 
     // Simulate latency
     final int latency = minLatencyMs + _rnd.nextInt(maxLatencyMs - minLatencyMs + 1);
-    await Future.delayed(Duration(milliseconds: latency));
+    await Future<void>.delayed(Duration(milliseconds: latency));
     return true; // Delivered
   }
 }

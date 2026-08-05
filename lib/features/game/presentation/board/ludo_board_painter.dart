@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:offline_ludo/features/game/domain/board/board_geometry.dart';
 import 'package:offline_ludo/features/game/domain/board/path_generator.dart';
 import 'package:offline_ludo/features/game/domain/models/player.dart';
+import 'package:offline_ludo/core/theme/app_colors.dart';
 
 class LudoBoardPainter extends CustomPainter {
   @override
@@ -10,15 +11,15 @@ class LudoBoardPainter extends CustomPainter {
 
     // Paints
     final Paint borderPaint = Paint()
-      ..color = Colors.black87
+      ..color = AppColors.primary.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0;
+      ..strokeWidth = 1.5;
 
     final Paint fillPaint = Paint()..style = PaintingStyle.fill;
 
-    // Draw White Background for entire board
+    // Draw Transparent Glass Background for entire board
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), 
-      Paint()..color = Colors.white);
+      Paint()..color = AppColors.background.withValues(alpha: 0.7));
 
     // 1. Draw 4 Home Bases
     _drawHomeBase(canvas, PlayerColor.green, 0, 0, cellSize, fillPaint, borderPaint);
@@ -51,7 +52,7 @@ class LudoBoardPainter extends CustomPainter {
       // Draw safe zone indicator
       if (PathGenerator.isSafeZone(i)) {
         if (cellColor == null) {
-          fillPaint.color = Colors.grey.shade300;
+          fillPaint.color = AppColors.primary.withValues(alpha: 0.1);
           canvas.drawRect(rect, fillPaint);
         }
         _drawStar(canvas, rect.center, cellSize * 0.3);
@@ -90,9 +91,9 @@ class LudoBoardPainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTWH(x, y, size, size), fillPaint);
     canvas.drawRect(Rect.fromLTWH(x, y, size, size), borderPaint);
 
-    // Inner white square
+    // Inner dark square
     final double innerMargin = cellSize * 0.75;
-    fillPaint.color = Colors.white;
+    fillPaint.color = AppColors.background.withValues(alpha: 0.9);
     canvas.drawRect(
       Rect.fromLTWH(x + innerMargin, y + innerMargin, size - innerMargin * 2, size - innerMargin * 2), 
       fillPaint,
@@ -128,9 +129,9 @@ class LudoBoardPainter extends CustomPainter {
     
     final Paint paint = Paint()..style = PaintingStyle.fill;
     final Paint borderPaint = Paint()
-      ..color = Colors.black87
+      ..color = AppColors.primary.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0;
+      ..strokeWidth = 1.5;
 
     void drawTriangle(Color color, Offset p1, Offset p2, Offset p3) {
       paint.color = color;
@@ -157,7 +158,7 @@ class LudoBoardPainter extends CustomPainter {
 
   void _drawStar(Canvas canvas, Offset center, double radius) {
     final Paint starPaint = Paint()
-      ..color = Colors.black54
+      ..color = AppColors.primary
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
       ..strokeJoin = StrokeJoin.round;

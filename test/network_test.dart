@@ -91,8 +91,9 @@ void main() {
         payload: const PacketPayload.error(message: 'error'),
       );
 
-      expectLater(manager.incomingPackets, emits(isA<Packet>()));
+      final expectation = expectLater(manager.incomingPackets, emits(isA<Packet>()));
       incomingController.add(jsonEncode(packet.toJson()));
+      await expectation;
     });
   });
 

@@ -14,7 +14,7 @@ class ConnectedClient {
   DateTime lastPongReceived;
   final StreamSubscription<String> _sub;
 
-  // ignore: prefer_initializing_formals
+
   ConnectedClient({
     required this.clientId,
     required this.transport,

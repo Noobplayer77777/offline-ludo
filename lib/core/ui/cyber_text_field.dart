@@ -19,9 +19,9 @@ class CyberTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceHighlight.withOpacity(0.5),
+        color: AppColors.surfaceHighlight.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3), width: 1),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1),
       ),
       child: TextField(
         controller: controller,
@@ -34,7 +34,7 @@ class CyberTextField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: AppColors.primary.withOpacity(0.7),
+            color: AppColors.primary.withValues(alpha: 0.7),
             letterSpacing: 2.0,
           ),
           prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.primary) : null,

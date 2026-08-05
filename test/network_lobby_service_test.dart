@@ -68,10 +68,12 @@ void main() {
       
       container.read(lobbyStateProvider.notifier).updateLobby(lobby);
       
+      when(() => mockClient.sendIntent(any())).thenReturn(null);
+      
       final service = container.read(lobbyServiceProvider);
       await service.startGame();
       
-      verify(() => mockHost.broadcast(const PacketPayload.startGame(firstTurnClientId: 'p1'))).called(1);
+      verify(() => mockClient.sendIntent(const PacketPayload.startGame(firstTurnClientId: 'p1'))).called(1);
     });
 
     test('toggleReady sends intent if player exists', () async {

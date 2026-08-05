@@ -91,7 +91,7 @@ void main() {
     ));
     
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
   });
 
   testWidgets('LobbyScreen renders correctly for host', (WidgetTester tester) async {
@@ -108,7 +108,7 @@ void main() {
       initialPlayerId: 'player1',
     ));
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('My Room'), findsOneWidget);
     expect(find.text('ABCD'), findsOneWidget);
@@ -134,7 +134,7 @@ void main() {
       initialPlayerId: 'player2', // Not host
     ));
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('My Room'), findsOneWidget);
     expect(find.text('Alice'), findsOneWidget);
@@ -164,7 +164,7 @@ void main() {
       initialPlayerId: 'player1',
     ));
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('Start Game'), findsOneWidget);
     
@@ -196,10 +196,10 @@ void main() {
       initialPlayerId: 'player1',
     ));
 
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
 
     await tester.tap(find.byIcon(Icons.copy));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('Room code copied!'), findsOneWidget);
   });

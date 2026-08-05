@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:offline_ludo/core/audio/audio_provider.dart';
 import 'package:offline_ludo/core/audio/audio_manager.dart';
 import 'package:offline_ludo/features/lobby/presentation/providers/lobby_provider.dart';
-import 'package:offline_ludo/features/lobby/domain/services/lobby_service.dart';
 import 'package:go_router/go_router.dart';
 
 class SettingsDialog extends ConsumerWidget {

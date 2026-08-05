@@ -115,6 +115,22 @@ class HostGameEngine {
     }));
   }
 
+  void addBotPlayer(String botName) {
+    if (_gameState != null) return; // Cannot add bots after game starts
+    if (_lobbyPlayers.length >= 4) return;
+    
+    final botId = 'bot_${DateTime.now().millisecondsSinceEpoch}_${_lobbyPlayers.length}';
+    final bot = Player(
+      id: botId,
+      name: botName,
+      color: _assignColor(),
+      isBot: true,
+      isReady: true, // Bots are always ready
+    );
+    _lobbyPlayers[botId] = bot;
+    _broadcastLobbySnapshot();
+  }
+
   void _startGame(String firstTurnClientId) {
     if (_lobbyPlayers.length < 2) return; // Need at least 2 players
     
@@ -140,6 +156,7 @@ class HostGameEngine {
       'type': 'game',
       'gameState': _gameState!.toJson(),
     }));
+    _checkBotTurn();
   }
 
   void _handleRollDice(String clientId) {
@@ -157,6 +174,7 @@ class HostGameEngine {
         'type': 'game',
         'gameState': _gameState!.toJson(),
       }));
+      _checkBotTurn();
     } catch (e) {
       // Ignore
     }
@@ -189,13 +207,42 @@ class HostGameEngine {
         'type': 'game',
         'gameState': _gameState!.toJson(),
       }));
+      _checkBotTurn();
     } catch (e) {
       // Ignore
     }
   }
 
   void _handleAck(String clientId, String ackType, int eventId) {
-    // Todo: Implement robust animation syncing. 
-    // For now, moves execute instantly and State snapshots keep everyone synchronized.
+    // Note: Animation syncing is out of scope for MVP.
+    // Moves execute instantly and State snapshots keep everyone synchronized.
+  }
+
+  void _checkBotTurn() async {
+    if (_gameState == null || _gameState!.winnerId != null) return;
+    
+    final activePlayerId = _gameState!.activePlayerId;
+    final player = _gameState!.players.firstWhere((p) => p.id == activePlayerId, orElse: () => _gameState!.players.first);
+    if (!player.isBot) return;
+
+    if (!_gameState!.hasRolledDice) {
+      // Simulate delay for thinking
+      await Future<void>.delayed(const Duration(seconds: 1));
+      if (_gameState?.activePlayerId == activePlayerId && !_gameState!.hasRolledDice) {
+        _handleRollDice(activePlayerId!);
+      }
+    } else {
+      // Simulate delay for thinking
+      await Future<void>.delayed(const Duration(seconds: 1));
+      if (_gameState?.activePlayerId == activePlayerId && _gameState!.hasRolledDice) {
+        final diceValue = _gameState!.currentDice.value;
+        final validTokens = RuleEngine.getValidTokensToMove(_gameState!, activePlayerId!, diceValue);
+        
+        if (validTokens.isNotEmpty) {
+          // AI Logic: Pick the first valid token (can be improved later)
+          _handleMoveToken(activePlayerId, validTokens.first.id);
+        }
+      }
+    }
   }
 }
